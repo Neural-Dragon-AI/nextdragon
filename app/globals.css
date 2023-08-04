@@ -2,26 +2,222 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@layer base {
+
+		
+@font-face {
+    font-family: 'Proxima Soft';
+    
+    src: url('/fonts/ProximaSoft/ProximaSoft-SemiBold.woff2') format('woff2');
+        
+    font-weight: 600;
+    font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-BoldIt.woff2') format('woff2');
+    font-weight: bold;
+    font-style: italic;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-Light.woff2') format('woff2');
+        
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-LightIt.woff2') format('woff2');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-SemiBoldIt.woff2') format('woff2');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-Black.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-RegularIt.woff2') format('woff2');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-MediumIt.woff2') format('woff2');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-BlackIt.woff2') format('woff2');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-ExtraBoldIt.woff2') format('woff2');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-ThinIt.woff2') format('woff2');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Proxima Soft';
+    src: url('/fonts/ProximaSoft/ProximaSoft-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}}
+
+
+
+@layer utilities {
+
+    .pause {
+     animation-play-state: paused;
+   }
+		.animation-delay-100 {
+			animation-delay: 0.1s;
+		}
+		.animation-delay-200 {
+			animation-delay: 0.2s;
+		}
+		.animation-delay-300 {
+			animation-delay: 0.3s;
+		}
+		.animation-delay-400 {
+			animation-delay: 0.4s;
+		}
+		.animation-delay-500 {
+			animation-delay: 0.5s;
+		}
+		.animation-delay-600 {
+			animation-delay: 0.6s;
+		}
+		.animation-delay-700 {
+			animation-delay: 0.7s;
+		}
+		.animation-delay-800 {
+			animation-delay: 0.8s;
+		}
+		.animation-delay-900 {
+			animation-delay: 0.9s;
+		}
+		.animation-delay-1000 {
+			animation-delay: 1s;
+		}
+		.animation-delay-1100 {
+			animation-delay: 1.1s;
+		}
+		.animation-delay-1200 {
+			animation-delay: 1.2s;
+		}
+		.animation-delay-1300 {
+			animation-delay: 1.3s;
+		}
+		.animation-delay-1400 {
+			animation-delay: 1.4s;
+		}
+		.animation-delay-1500 {
+			animation-delay: 1.5s;
+		}
+		.animation-delay-1600 {
+			animation-delay: 1.6s;
+		}
+		.animation-delay-1700 {
+			animation-delay: 1.7s;
+		}
+		.animation-delay-1800 {
+			animation-delay: 1.8s;
+		}
+		.animation-delay-1900 {
+			animation-delay: 1.9s;
+		}
+		.animation-delay-2000 {
+			animation-delay: 2s;
+		}	
+		.animation-delay-2100 {
+			animation-delay: 2.1s;
+		}		
+		.animation-delay-2500 {
+			animation-delay: 2.5s;
+		}		
+		.animation-delay-3000 {
+			animation-delay: 3s;
+		}	
+
+}
+
+@layer components {
+		.prompt {
+		@apply text-white text-sm invisible animate-show; 
+		}
+		.navbar-button{
+   @apply   inline-flex items-center  justify-center  w-28
+								 rounded-md border-2 border-transparent bg-gray-600 px-4 py-3 text-sm font-semibold text-white
+								ring-offset-white transition-all hover:bg-gray-500 hover:text-gray-900  
+								focus:outline-none focus:ring-2 focus:ring-offset-2 hover:focus:border-black 
+								dark:hover:border-white dark:focus:ring-offset-gray-800
+								border-black dark:border-slate-300
+
+		}
+   .generic-button{
+   @apply   inline-flex items-center font-proxima hover:font-bold justify-center text-black   
+						rounded-md border-transparent px-4 py-3 text-sm font-semibold 
+						ring-offset-white transition-all   
+						dark:focus:ring-offset-gray-800
+								
+
+		}
 }
