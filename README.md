@@ -8,7 +8,7 @@ Like the previous SPA version, you just have to install node modules and run the
 
 ```bash
 pnpm install
-pnpm dev
+pnpm run dev
 ```
 
 # Warning
