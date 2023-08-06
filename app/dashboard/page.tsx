@@ -17,7 +17,7 @@ export default async function Dashboard() {
 
 	return (
 		<>
-			<Navbar username={session.user.email} />
+			<Navbar />
 		</>
 	)
 }
