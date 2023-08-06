@@ -13,13 +13,14 @@ export default function Login() {
 
 	const handleSignUp = async () => {
 
-		await supabase.auth.signUp({
+		const data = await supabase.auth.signUp({
 			email: "gmgioele@gmail.com",
 			password: "te1st4444",
 			options: {
 				emailRedirectTo: `${location.origin}/auth/callback`,
 			},
 		});
+		console.log(data)
 		router.refresh();
 	};
 
@@ -35,10 +36,14 @@ export default function Login() {
 		await supabase.auth.signInWithOAuth({
 			provider: 'google',
 			options: {
+
+				redirectTo: `${location.origin}/auth/callback`,
+
 				queryParams: {
 					access_type: 'offline',
 					prompt: 'consent',
 				},
+
 			},
 		})
 		router.refresh();
@@ -48,7 +53,9 @@ export default function Login() {
 		await supabase.auth.signInWithOAuth({
 			provider: 'github',
 			options: {
+				redirectTo: `${location.origin}/auth/callback`,
 				queryParams: {
+
 					access_type: 'offline',
 					prompt: 'consent',
 				},
@@ -61,7 +68,10 @@ export default function Login() {
 		await supabase.auth.signInWithOAuth({
 			provider: 'discord',
 			options: {
+				redirectTo: `${location.origin}/auth/callback`,
 				queryParams: {
+					redirectTo: `${location.origin}/auth/callback`,
+
 					access_type: 'offline',
 					prompt: 'consent',
 				},
