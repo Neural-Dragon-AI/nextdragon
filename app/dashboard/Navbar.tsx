@@ -16,7 +16,7 @@ export default function Navbar() {
 		<nav className="absolute flex h-10 my-2 border-t-2 border-b-2 border-gray-600 bg-gray-400 place-items-center w-full shadow-md z-10">
 			<div className="absolute right-5 text-black flex flex-row space-x-4">
 				<section className="group inline-block relative">
-					<div className="w-40 h-fit cursor-pointer text-black font-bold flex justify-center">
+					<div className="w-40 h-fit text-black font-bold flex justify-center">
 						<Image
 
 							src="https://www.svgrepo.com/show/361411/account.svg"
@@ -31,7 +31,7 @@ export default function Navbar() {
             text-black  transition duration-200 
             ease-in-out  font-proxima font-bold">
 
-						<div className="flex flex-row justify-evenly cursor-pointer">
+						<div className="flex flex-row justify-evenly cursor-pointer hover:bg-black/[.2] rounded-md p-0.5">
 
 							<Image
 
@@ -43,16 +43,16 @@ export default function Navbar() {
 							<a className="h-25 py-1 ml-2">Settings</a>
 						</div>
 
-						<div className="flex flex-row justify-evenly cursor-pointer">
+						<div className="flex flex-row justify-evenly cursor-pointer hover:bg-black/[.2] rounded-md p-0.5">
 							<Image
 
 								src="https://www.svgrepo.com/show/469802/sign-out-alt.svg"
 								width={25}
 								height={25}
-								alt="Account"
+								alt="SignOut"
 							/>
 
-							<button className="h-25 py-1 ml-2 " onClick={handleSignOut}>Sign out</button>
+							<button className="h-25 py-1 ml-2 " onClick={handleSignOut}>Logout&nbsp;&nbsp;</button>
 						</div>
 					</div>
 				</section>
