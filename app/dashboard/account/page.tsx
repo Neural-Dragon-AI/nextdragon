@@ -29,9 +29,9 @@ export default async function Account() {
 	const profile: Profile | any = data.data ? data.data[0] : null
 
 	return (
-		<div className="w-1/2 h-3/4 text-black flex flex-col border-2 border-offset-0 border-emerald-600 bg-gray-700 rounded-md font-proxima">
-			<div className="place-self-center text-3xl p-4 text-emerald-600">{profile.username}</div>
-			<SettingsForm id={profile.id} />
+		<div className="w-1/2 h-3/4 text-black flex flex-col border-0  bg-gray-700 rounded-md font-proxima">
+
+			<SettingsForm profile={profile} />
 		</div>
 	)
 }

@@ -49,7 +49,7 @@ export default function Navbar(id: string | any) {
 								height={25}
 								alt="Account"
 							/>
-							<a className="h-25 py-1 ml-2">Account</a>
+							<p className="h-25 py-1 ml-2">Account</p>
 						</Link>
 
 						<button onClick={handleSignOut} className="flex flex-row w-full justify-evenly cursor-pointer text-emerald-400 hover:bg-black/[.2] rounded-md p-0.5">
