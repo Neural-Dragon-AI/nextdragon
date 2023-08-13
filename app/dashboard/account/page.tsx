@@ -24,7 +24,7 @@ export default async function Account() {
 
 	const data = await supabase
 		.from('profiles')
-		.select('id, username');
+		.select('id, username, openaiApiKey');
 
 	const profile: Profile | any = data.data ? data.data[0] : null
 

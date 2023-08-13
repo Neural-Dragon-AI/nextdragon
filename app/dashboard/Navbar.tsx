@@ -26,7 +26,7 @@ export default function Navbar(id: string | any) {
 				<section className="group inline-block relative">
 					<div className="w-40 h-fit text-black font-bold flex justify-center">
 						<Image
-							className="rounded-full"
+							className="rounded-full h-9 w-9 object-cover"
 							loader={imageLoader}
 							src="avatar.jpg"
 							width={25}
@@ -35,7 +35,7 @@ export default function Navbar(id: string | any) {
 						/>
 					</div>
 					<div className="space-y-3 bg-gray-700 absolute border-l-[1px] border-emerald-600 border-b-[1px] border-r-[1px]
-            right-0 top-full w-40 transform rounded-b-md mt-[0.4rem]
+            right-0 top-full w-40 transform rounded-b-md mt-[0rem]
             px-2 pt-5 pb-2 text-sm scale-y-0 group-hover:scale-y-100 origin-top
             text-black  transition duration-200 
             ease-in-out  font-proxima font-bold">
