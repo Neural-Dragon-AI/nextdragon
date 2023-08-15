@@ -21,7 +21,7 @@ export default function Navbar(id: string | any) {
 	}
 
 	return (
-		<nav className="absolute top-0 flex h-10 my-2 border-t-[1px] border-b-[1px] border-emerald-600 bg-gray-700 place-items-center w-full shadow-md z-10">
+		<nav className="absolute top-0 flex h-10 my-2 border-t-[0.1px] border-b-[0.1px] border-emerald-300 bg-gray-700 place-items-center w-full shadow-md z-10">
 			<div className="absolute right-5 text-black flex flex-row space-x-4">
 				<section className="group inline-block relative">
 					<div className="w-40 h-fit text-black font-bold flex justify-center">
@@ -34,8 +34,8 @@ export default function Navbar(id: string | any) {
 							alt="Account"
 						/>
 					</div>
-					<div className="space-y-3 bg-gray-700 absolute border-l-[1px] border-emerald-600 border-b-[1px] border-r-[1px]
-            right-0 top-full w-40 transform rounded-b-md mt-[0rem]
+					<div className="space-y-3 bg-gray-700 absolute border-l-[0.1px] border-emerald-300 border-b-[0.1px] border-r-[0.1px]
+            right-0 top-full w-40 transform rounded-b-md mt-[0.08rem]
             px-2 pt-5 pb-2 text-sm scale-y-0 group-hover:scale-y-100 origin-top
             text-black  transition duration-200 
             ease-in-out  font-proxima font-bold">

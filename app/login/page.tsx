@@ -1,15 +1,17 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import Login from './auth';
+import { getSession } from "../utils/serverCookies";
 
+
+
+import Login from './auth';
 import { redirect } from 'next/navigation';
 
 
+
+
 export default async function SignIn() {
-	const supabase = createServerComponentClient({ cookies });
-	const {
-		data: { session },
-	} = await supabase.auth.getSession();
+
+
+	const session = await getSession()
 
 	if (session) {
 		redirect("/dashboard");
@@ -18,9 +20,11 @@ export default async function SignIn() {
 	return (
 		<div className="flex justify-center ">
 
-				<Login />
+			<Login />
 
 		</div>
 	);
+
+
 }
 

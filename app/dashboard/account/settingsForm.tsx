@@ -20,9 +20,8 @@ export default function SettingsForm(prop: Profile | any) {
 	const [savesuccess, setSavesuccess] = useState(false)
 	const [username, setUsername] = useState(prop.profile.username)
 	const [openaiapikey, setOpenaiapikey] = useState(prop.profile.openaiApiKey)
-	console.log(openaiapikey)
-	/* const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${id.id}/avatar.jpg`) */
-	/* const avatarUrl = publicUrl.data.publicUrl */
+
+
 
 	const imageLoader = ({ }) => {
 		const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${prop.profile.id}/avatar.jpg`)
@@ -52,6 +51,7 @@ export default function SettingsForm(prop: Profile | any) {
 				console.log('Caricamento completato');
 				setImagesuccess(true)
 				router.refresh()
+
 			}
 		}
 
@@ -66,18 +66,20 @@ export default function SettingsForm(prop: Profile | any) {
 				method: 'PUT',
 				body: JSON.stringify({ username: username, id: prop.profile.id, openaiapikey: openaiapikey }),
 			})
+
 		}
 		catch (error) {
 			console.log(error)
 		}
-		router.refresh()
+
 		setSavesuccess(true)
+		router.refresh()
 
 	}
 
 	return (
 
-		<div className="relative w-full bg-gray-700 h-full rounded-md p-8 ">
+		<div className="relative  bg-gray-700  rounded-md p-8 w-1/2 h-3/4 font-proxima ">
 			<p className="text-emerald-300 text-2xl  ml-28 mt-12 h-fit w-fit">Hello {prop.profile.username}</p>
 			<label htmlFor="avatar">
 				<Image
@@ -100,9 +102,9 @@ export default function SettingsForm(prop: Profile | any) {
 
 				<label className="mb-1 text-emerald-300" >Username</label>
 				<div className="mb-8 flex flex-row space-x-2">
-					<input type="text" id="username" value={username} onChange={(event) => { setUsername(event.target.value); setSavesuccess(false) }}
+					<textarea id="username" value={username} onChange={(event) => { setUsername(event.target.value); setSavesuccess(false) }}
 						minLength={51} maxLength={51}
-						className=" h-8 w-1/2 border-none rounded-md px-4 py-3 text-sm 
+						className="resize-none h-8 overflow-hidden w-1/2 border-none rounded-md px-4 text-sm 
 				  invalid:ring-red-500  bg-white/[.1] ring-none dark:outline-white
 						 placeholder:text-emerald-300 text-emerald-300"/>
 
@@ -124,7 +126,7 @@ export default function SettingsForm(prop: Profile | any) {
 				</button>
 				{savesuccess ? <div className="absolute right-12 bottom-8 text-emerald-300 text-xs mt-3">Changes saved!</div> : null}
 
-				<Link href="/dashboard" className="absolute bottom-0 left-0 flex flex-row cursor-pointer space-x-1 hover:bg-black/[.2] px-2 py-1 rounded-md">
+				<button onClick={() => router.back()} className="absolute bottom-0 left-0 flex flex-row cursor-pointer space-x-1 hover:bg-black/[.2] px-2 py-1 rounded-md">
 
 					<Image
 
@@ -134,7 +136,7 @@ export default function SettingsForm(prop: Profile | any) {
 						alt="Account"
 					/>
 					<p className="text-emerald-300">Back</p>
-				</Link>
+				</button>
 
 
 			</div>

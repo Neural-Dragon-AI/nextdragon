@@ -1,20 +1,17 @@
-import { _createServerComponentClient } from "../../utils/serverCookies";
-import { getSession } from "../../utils/serverCookies";
-import { redirect } from "next/navigation";
-import SettingsForm from "./settingsForm"
+import Modal from '../../components/modal/Modal'
+import SettingsForm from '../../account/settingsForm'
+import { _createServerComponentClient } from "../../../utils/serverCookies";
+import { getSession } from "../../../utils/serverCookies";
 
+import { redirect } from "next/navigation";
 
 interface Profile {
 	id: number;
 	username: string;
-	openaiApiKey: string;
+  openaiApiKey: string;
 }
 
-
-
-export default async function Account() {
-
-
+export default async function AccountModal() {
 	const supabase = _createServerComponentClient();
 
 	const session = await getSession();
@@ -30,8 +27,8 @@ export default async function Account() {
 	const profile: Profile | any = data.data ? data.data[0] : null
 
 	return (
-		<>
+		<Modal>
 			<SettingsForm profile={profile} />
-		</>
+		</Modal>
 	)
 }

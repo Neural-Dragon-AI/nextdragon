@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@edge-runtime/cookies':
+    specifier: ^3.2.3
+    version: 3.2.3
   '@supabase/auth-helpers-nextjs':
     specifier: ^0.7.4
     version: 0.7.4(@supabase/supabase-js@2.31.0)
@@ -83,6 +86,11 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.11
+    dev: false
+
+  /@edge-runtime/cookies@3.2.3:
+    resolution: {integrity: sha512-xe8hUIsNe3+4ExjykueCMHknJ5tccme6HQgxhGcem7TepZMD8JYRY/XNI+SfMZLArzu1kO+7prOK2OHMPGe3zg==}
+    engines: {node: '>=14'}
     dev: false
 
   /@emotion/is-prop-valid@0.8.8:
