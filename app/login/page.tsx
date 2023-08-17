@@ -1,4 +1,4 @@
-import { getSession } from "../utils/serverCookies";
+import { getSession } from "../actions/serverCookies";
 
 
 

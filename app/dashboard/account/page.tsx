@@ -1,8 +1,8 @@
-import { _createServerComponentClient } from "../../utils/serverCookies";
-import { getSession } from "../../utils/serverCookies";
+import { _createServerComponentClient } from "../../actions/serverCookies";
+import { getSession } from "../../actions/serverCookies";
 import { redirect } from "next/navigation";
 import SettingsForm from "./settingsForm"
-
+import { unstable_cache } from 'next/cache'
 
 interface Profile {
 	id: number;
@@ -23,9 +23,18 @@ export default async function Account() {
 		redirect("/login");
 	}
 
-	const data = await supabase
-		.from('profiles')
-		.select('id, username, openaiApiKey');
+	const data = await unstable_cache(
+
+		async () => {
+			const data = await supabase.from('profiles').select('id,username,openaiApiKey')
+			return data
+		},
+		['account'],
+		{
+			tags: ['account'],
+			revalidate: 1,
+		}
+	)()
 
 	const profile: Profile | any = data.data ? data.data[0] : null
 

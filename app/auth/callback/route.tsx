@@ -1,4 +1,4 @@
-import { _createRouteHandlerClient } from "../../utils/serverCookies"
+import { _createRouteHandlerClient } from "../../actions/serverCookies"
 import { NextResponse } from "next/server";
 
 

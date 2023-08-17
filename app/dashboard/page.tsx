@@ -1,6 +1,6 @@
 import Navbar from "./Navbar"
-import { _createServerComponentClient } from "../utils/serverCookies";
-import { getSession } from "../utils/serverCookies";
+import { _createServerComponentClient } from "../actions/serverCookies";
+import { getSession } from "../actions/serverCookies";
 
 import { redirect } from "next/navigation";
 interface Profile {
