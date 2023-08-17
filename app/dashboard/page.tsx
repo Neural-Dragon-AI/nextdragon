@@ -10,10 +10,6 @@ interface Profile {
 }
 
 
-
-
-
-
 export default async function Dashboard() {
 	const supabase = _createServerComponentClient();
 
