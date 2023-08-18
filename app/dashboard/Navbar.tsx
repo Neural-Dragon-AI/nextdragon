@@ -4,8 +4,16 @@ import { useRouter } from "next/navigation";
 import Image from "next/image"
 import Link from 'next/link'
 
-export default function Navbar(id: string | any) {
+interface Profile {
+	id: number;
+	username: string;
+	openaiApiKey: string;
+	avatarUrl: string;
+}
 
+
+export default function Navbar(prop: Profile | any) {
+  const profile = prop.profile
 	const router = useRouter();
 	const supabase = createClientComponentClient();
 
@@ -15,7 +23,7 @@ export default function Navbar(id: string | any) {
 	};
 
 	const imageLoader = ({ }) => {
-		const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${id.id}/avatar.jpg`)
+		const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${profile.id}/${profile.avatarUrl}.jpg`)
 		const avatarUrl = publicUrl.data.publicUrl
 		return avatarUrl
 	}

@@ -1,5 +1,5 @@
-import { _createServerComponentClient } from "../../actions/serverCookies";
-import { getSession } from "../../actions/serverCookies";
+import { _createServerComponentClient } from "@/actions/serverCookies";
+import { getSession } from "@/actions/serverCookies";
 import { redirect } from "next/navigation";
 import SettingsForm from "./settingsForm"
 import { unstable_cache } from 'next/cache'
@@ -8,6 +8,7 @@ interface Profile {
 	id: number;
 	username: string;
 	openaiApiKey: string;
+	avatarUrl: string;
 }
 
 
@@ -26,7 +27,7 @@ export default async function Account() {
 	const data = await unstable_cache(
 
 		async () => {
-			const data = await supabase.from('profiles').select('id,username,openaiApiKey')
+			const data = await supabase.from('profiles').select('id,username,openaiApiKey,avatarUrl')
 			return data
 		},
 		['account'],
@@ -40,6 +41,7 @@ export default async function Account() {
 
 	return (
 		<>
+
 			<SettingsForm profile={profile} />
 		</>
 	)

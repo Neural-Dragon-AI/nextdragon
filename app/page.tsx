@@ -1,4 +1,4 @@
-import { getSession } from "./actions/serverCookies"
+import { getSession } from "@/actions/serverCookies"
 import { redirect } from "next/navigation";
 
 

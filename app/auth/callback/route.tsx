@@ -1,7 +1,5 @@
-import { _createRouteHandlerClient } from "../../actions/serverCookies"
+import { _createRouteHandlerClient } from "@/actions/serverCookies"
 import { NextResponse } from "next/server";
-
-
 
 export async function GET(request: Request) {
 
