@@ -24,7 +24,7 @@ interface TreeProps {
 
 export const Tree: React.FC<TreeProps> = ({ data }) => {
 	return (
-		<div className="flex flex-col h-full">
+		<div className="h-auto flex flex-col space-y-2 m-2">
 			{data.map((item, index) => {
 				if (item.type === 'file') {
 					return <FileTree key={index} data={item} />;
@@ -32,9 +32,11 @@ export const Tree: React.FC<TreeProps> = ({ data }) => {
 
 				if (item.type === 'folder') {
 					return (
-						<FolderTree key={index} data={item}>
-							<Tree key={index} data={item.childrens} />
-						</FolderTree>
+						<div className="" key={index}>
+							<FolderTree key={index} data={item}>
+								<Tree key={index} data={item.childrens} />
+							</FolderTree>
+						</div>
 					);
 				}
 

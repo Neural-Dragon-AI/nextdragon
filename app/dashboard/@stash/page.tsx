@@ -10,6 +10,7 @@ interface Profile {
 	username: string;
 	openaiApiKey: string;
 	avatarUrl: string;
+	stash_mapping: FileSystemObject
 }
 
 interface FileTreeType {
@@ -38,7 +39,7 @@ export default async function Dashboard() {
 	const data = await unstable_cache(
 
 		async () => {
-			const data = await supabase.from('profiles').select('id,username,openaiApiKey,avatarUrl')
+			const data = await supabase.from('profiles').select('*')
 			return data
 		},
 		['account'],
@@ -49,34 +50,15 @@ export default async function Dashboard() {
 	)()
 
 	const profile: Profile | any = data.data ? data.data[0] : null
-
-
-
-
-	const structure: FileSystemObject[] = [
-		{
-			type: "folder",
-			name: "src",
-			childrens: [
-				{
-					type: "folder",
-					name: "Components",
-					childrens: [
-						{ type: "file", name: "Modal.js" },
-						{ type: "file", name: "Modal.css" }
-					]
-				},
-				{ type: "file", name: "index.js" },
-				{ type: "file", name: "index.html" }
-			]
-		},
-		{ type: "file", name: "package.json" }
-	];
+	console.log(profile)
 
 	return (
-		<div className="w-3/4 bg-gray-700 p-4 rounded-md h-[90%]  ">
-			{profile.username}
-			<Tree data={ structure } />
+		<div className="w-3/4 bg-gray-700 p-4 rounded-md h-[90%] flex flex-col">
+			<p className="fonta-proxima text-white text-2xl self-center">{profile.username}s Stash</p>
+			<div className="flex flex-col h-full space-y-4 bg-black/[.3] rounded-md">
+
+				<Tree data={profile.stash_mapping} />
+			</div>
 		</div>
 	)
 }
