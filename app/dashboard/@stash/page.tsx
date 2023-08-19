@@ -1,8 +1,9 @@
-import Navbar from "./Navbar"
 import { _createServerComponentClient } from "@/actions/serverCookies";
 import { getSession } from "@/actions/serverCookies";
 import { unstable_cache } from 'next/cache'
 import { redirect } from "next/navigation";
+import { Suspense } from 'react'
+
 
 interface Profile {
 	id: number;
@@ -37,8 +38,10 @@ export default async function Dashboard() {
 	const profile: Profile | any = data.data ? data.data[0] : null
 
 	return (
-		<>
-			<Navbar profile={profile} />
-		</>
+		<Suspense fallback={<div className="w-screen bg-white">Loading feed...</div>}>
+			<div className="w-1/2 bg-gray-700 p-4 rounded-md h-[90%]  left-12">
+				{profile.username}
+			</div>
+		</Suspense>
 	)
 }

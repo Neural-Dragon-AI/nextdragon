@@ -1,5 +1,5 @@
 import Modal from '@/components/modal/Modal'
-import SettingsForm from '../../account/settingsForm'
+import SettingsForm from './settingsForm'
 import { _createServerComponentClient } from "@/actions/serverCookies";
 import { getSession } from "@/actions/serverCookies";
 import { unstable_cache } from 'next/cache'
@@ -34,9 +34,9 @@ export default async function AccountModal() {
 			revalidate: 3600,
 		}
 	)()
-	console.log("THE DATA ARE", data)
+
 	const profile: Profile | any = data.data ? data.data[0] : null
-	console.log("THE PROFILE IS IN MODAL", profile)
+
 	return (
 		<Modal>
 			<SettingsForm profile={profile} />

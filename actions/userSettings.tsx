@@ -1,6 +1,7 @@
 "use server"
 import { _createServerComponentClient } from "./serverCookies"
 import { revalidatePath, revalidateTag } from 'next/cache'
+import { redirect } from "next/navigation";
 
 export async function updateUser(e: FormData) {
 

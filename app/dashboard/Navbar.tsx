@@ -29,12 +29,12 @@ export default function Navbar(prop: Profile | any) {
 	}
 
 	return (
-		<nav className="absolute top-0 flex h-10 my-2 border-t-[0.1px] border-b-[0.1px] border-emerald-300 bg-gray-700 place-items-center w-full shadow-md z-10">
-			<div className="absolute right-5 text-black flex flex-row space-x-4">
+		<nav className=" flex h-9 my-3 bg-gray-700 place-items-center w-[98%] shadow-md rounded-md z-10">
+			<div className="absolute top-2 right-14 text-black flex flex-row space-x-4">
 				<section className="group inline-block relative">
 					<div className="w-40 h-fit text-black font-bold flex justify-center">
 						<Image
-							className="rounded-full h-9 w-9 object-cover"
+							className="rounded-full h-10 w-10 object-cover"
 							loader={imageLoader}
 							src="avatar.jpg"
 							width={25}
@@ -42,8 +42,8 @@ export default function Navbar(prop: Profile | any) {
 							alt="Account"
 						/>
 					</div>
-					<div className="space-y-3 bg-gray-700 absolute border-l-[0.1px] border-emerald-300 border-b-[0.1px] border-r-[0.1px]
-            right-0 top-full w-40 transform rounded-b-md mt-[0.08rem]
+					<div className="space-y-3 bg-gray-700 absolute 
+            right-0 top-full w-40 transform rounded-b-md mt-0
             px-2 pt-5 pb-2 text-sm scale-y-0 group-hover:scale-y-100 origin-top
             text-black  transition duration-200 
             ease-in-out  font-proxima font-bold">

@@ -35,7 +35,7 @@ export default function Modal({ children }: { children: React.ReactNode }) {
   return (
     <div
       ref={overlay}
-      className="fixed  w-screen h-screen z-10   bg-black/[.6]"
+      className="fixed top-1 w-screen h-screen z-10   bg-black/[.6]"
       onClick={onClick}
     >
       <div

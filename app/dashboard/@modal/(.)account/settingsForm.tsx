@@ -10,6 +10,8 @@ import { experimental_useOptimistic as useOptimistic, useRef } from 'react'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { useRouter } from 'next/navigation'
 
+import { redirect } from "next/navigation";
+
 
 interface Profile {
 	id: number;
@@ -18,8 +20,6 @@ interface Profile {
 	avatarUrl: string;
 }
 
-// Opt out of caching for all data requests in the route segment
-export const dynamic = 'force-dynamic'
 
 export default function SettingsForm(prop: Profile | any) {
 	const profile = prop.profile
