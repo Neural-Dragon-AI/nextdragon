@@ -4,6 +4,7 @@ import { unstable_cache } from 'next/cache'
 import { redirect } from "next/navigation";
 import { Suspense } from 'react'
 import { Tree, FileSystemObject } from './tree/Tree'
+import Realtime from './realtime'
 
 interface Profile {
 	id: number;
@@ -42,7 +43,7 @@ export default async function Dashboard() {
 
 	return (
 		<div className="w-3/4 bg-gray-700 p-4 rounded-md h-[90%] flex flex-col">
-			<p className="fonta-proxima text-white text-2xl self-center">{profile.username}s Stash</p>
+			<Realtime prop={profile} />
 			<div className="flex flex-col h-full space-y-4 bg-black/[.3] rounded-md">
 
 				<Tree data={profile.stash_mapping} />

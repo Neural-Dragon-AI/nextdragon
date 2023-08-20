@@ -23,8 +23,8 @@ interface Profile {
 
 export default function SettingsForm(prop: Profile | any) {
 	const profile = prop.profile
-	console.log(prop)
-	console.log(profile)
+	/* console.log(prop) */
+	/* console.log(profile) */
 	const router = useRouter()
 	const supabase = createClientComponentClient();
 	const [isPending, startTransition] = useTransition()

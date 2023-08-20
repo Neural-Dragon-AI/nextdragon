@@ -3,6 +3,8 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import Image from "next/image"
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
+
 
 interface Profile {
 	id: number;
@@ -13,20 +15,41 @@ interface Profile {
 
 
 export default function Navbar(prop: Profile | any) {
-  const profile = prop.profile
+
+	const profile = prop.profile
 	const router = useRouter();
-	const supabase = createClientComponentClient();
+	const supabase = createClientComponentClient()
+
+
+	const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${profile.id}/${profile.avatarUrl}.jpg`)
+	const returnUrl = publicUrl.data.publicUrl
+	const [avatarUrl, setAvatarurl] = useState(returnUrl)
+
+	useEffect(() => {
+		const channel = supabase.channel('navbar').on('postgres_changes', {
+			event: '*',
+			schema: 'public',
+			table: 'profiles',
+			filter: `avatarUrl=neq.${profile.avatarUrl}`
+		}, (payload) => {
+			const newrow: any = payload.new
+			console.log(newrow.avatarUrl)
+			const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${profile.id}/${newrow.avatarUrl}.jpg`)
+			const returnUrl = publicUrl.data.publicUrl
+			setAvatarurl(returnUrl)
+
+
+		}).subscribe()
+		return () => {
+			supabase.removeChannel(channel)
+		}
+	})
 
 	const handleSignOut = async () => {
 		await supabase.auth.signOut();
 		router.refresh();
 	};
 
-	const imageLoader = ({ }) => {
-		const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${profile.id}/${profile.avatarUrl}.jpg`)
-		const avatarUrl = publicUrl.data.publicUrl
-		return avatarUrl
-	}
 
 	return (
 		<nav className=" flex h-9 my-3 bg-gray-700 place-items-center w-[98%] shadow-md rounded-md z-10">
@@ -35,8 +58,7 @@ export default function Navbar(prop: Profile | any) {
 					<div className="w-40 h-fit text-black font-bold flex justify-center">
 						<Image
 							className="rounded-full h-10 w-10 object-cover"
-							loader={imageLoader}
-							src="avatar.jpg"
+							src={avatarUrl}
 							width={25}
 							height={25}
 							alt="Account"
