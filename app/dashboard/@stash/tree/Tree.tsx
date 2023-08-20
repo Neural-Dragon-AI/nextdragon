@@ -2,20 +2,19 @@
 import { FileTree } from "./fileTree"
 import { FolderTree } from "./folderTree"
 
-
-
-interface FileTreeType {
+export interface FileTreeType {
 	type: "file";
 	name: string;
+  id: string;
 }
 
-interface FolderTreeType {
+export interface FolderTreeType {
 	type: "folder";
 	name: string;
 	childrens: Array<FileTreeType | FolderTreeType>;
 }
 
-type FileSystemObject = FileTreeType | FolderTreeType;
+export type FileSystemObject = FileTreeType | FolderTreeType;
 
 interface TreeProps {
 	data: FileSystemObject[];

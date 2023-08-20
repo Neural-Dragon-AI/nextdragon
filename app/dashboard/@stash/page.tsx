@@ -3,7 +3,7 @@ import { getSession } from "@/actions/serverCookies";
 import { unstable_cache } from 'next/cache'
 import { redirect } from "next/navigation";
 import { Suspense } from 'react'
-import { Tree } from './tree/Tree'
+import { Tree, FileSystemObject } from './tree/Tree'
 
 interface Profile {
 	id: number;
@@ -13,18 +13,6 @@ interface Profile {
 	stash_mapping: FileSystemObject
 }
 
-interface FileTreeType {
-	type: "file";
-	name: string;
-}
-
-interface FolderTreeType {
-	type: "folder";
-	name: string;
-	childrens: Array<FileTreeType | FolderTreeType>;
-}
-
-type FileSystemObject = FileTreeType | FolderTreeType;
 
 
 export default async function Dashboard() {

@@ -1,18 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Image from "next/image"
-
-interface FileTreeType {
-	type: "file";
-	name: string;
-}
-
-
-interface FolderTreeType {
-	type: "folder";
-	name: string;
-	childrens: Array<FileTreeType | FolderTreeType>;
-}
+import { FolderTreeType } from './Tree'
 
 interface FolderTreeProps {
 	data: FolderTreeType;
@@ -42,11 +31,9 @@ export const FolderTree: React.FC<FolderTreeProps> = ({ data, children }) => {
 			</div>
 
 			<section
-				className={`  overflow-hidden   ${open ? 'h-auto flex flex-col  w-fit px-2 py-1 bg-black/[.3]  rounded-md   ml-12' : 'h-0'}`}>
+				className={`  overflow-hidden   ${open ? 'h-auto flex flex-col  w-fit px-2 py-1 mt-2 bg-black/[.3]  rounded-md   ml-12' : 'h-0'}`}>
 				{children}
 			</section>
-
-
 		</>
 	)
 }
