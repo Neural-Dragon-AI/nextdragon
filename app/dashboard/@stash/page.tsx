@@ -39,7 +39,7 @@ export default async function Dashboard() {
 	)()
 
 	const profile: Profile | any = data.data ? data.data[0] : null
-	console.log(profile)
+/* 	console.log(profile) */
 
 	return (
 		<div className="w-3/4 bg-gray-700 p-4 rounded-md h-[90%] flex flex-col">

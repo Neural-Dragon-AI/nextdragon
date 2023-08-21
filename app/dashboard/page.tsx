@@ -30,7 +30,7 @@ export default async function Dashboard() {
 		['account'],
 		{
 			tags: ['account'],
-			revalidate: 1,
+			revalidate: 3600,
 		}
 	)()
 

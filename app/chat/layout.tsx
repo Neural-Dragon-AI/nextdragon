@@ -6,7 +6,7 @@ export default function Layout(props: {
 
 
 	return (
-		<div className="h-screen w-screen bg-transparent m-0 p-0 z-0 flex justify-center  items-center ">
+		<div className="h-screen w-screen bg-transparent m-0 p-0 z-0 flex flex-row justify-between items-center ">
 			{props.children}
 		</div>
 	)
