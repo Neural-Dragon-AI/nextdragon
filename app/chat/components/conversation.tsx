@@ -18,7 +18,6 @@ interface Conversation {
 	conversation: Message[]
 }
 
-
 export const Conversation: React.FC<Conversation> = ({ conversation }) => {
 	/* 	const chat = useChatStore((state) => state.chats.find((chat) => chat.instancekey === instancekey)); */
 	/* const thisconversation = chat?.conversation || []; */
@@ -53,7 +52,7 @@ export const Conversation: React.FC<Conversation> = ({ conversation }) => {
 						itemContent={(index, message) => {
 							if (message.role == 'user') {
 								return (
-									<UserMessage content={message.content} index={index} />
+									<UserMessage content={message.content} index={index} key={index} />
 								)
 							} else if (message.role == 'assistant') {
 								return (
@@ -62,7 +61,7 @@ export const Conversation: React.FC<Conversation> = ({ conversation }) => {
 										content={message.content}
 										status='correct'
 										index={index}
-										elapsed_time={message.timestamp}
+
 									/>
 
 								)

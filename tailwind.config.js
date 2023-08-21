@@ -6,7 +6,9 @@ module.exports = {
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	plugins: [require('@tailwindcss/forms')],
+	darkMode: 'class',
 	theme: {
+
 		screens: {
 			"tb": "800px",
 			"xxl": "1500px"
