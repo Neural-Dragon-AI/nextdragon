@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Profile, useNextStore } from '@/store/NextStore'
-import useStore from '@/store/useStore'
+
 
 interface NavbarProps {
 	profile: Profile
@@ -13,14 +13,11 @@ interface NavbarProps {
 
 
 export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
-
-	/* const bears = useStore(useBearStore, (state) => state.bears) */
-
-
-	const store = useStore(useNextStore, (state) => state)
-	const setCurrentProfile = store?.setCurrentProfile || null
-
-	if (setCurrentProfile) { setCurrentProfile(profile) }
+	const setCurrentProfile = useNextStore(state => state.setCurrentProfile)
+	const currentProfile = useNextStore(state => state.current_profile)
+	if (currentProfile.stash_mapping.length === 0) {
+		setCurrentProfile(profile)
+	}
 
 	const router = useRouter();
 	const supabase = createClientComponentClient()
@@ -41,7 +38,6 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 			console.log(newrow.avatarUrl)
 			const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${profile.id}/${newrow.avatarUrl}.jpg`)
 			const returnUrl = publicUrl.data.publicUrl
-			if (setCurrentProfile) { setCurrentProfile(profile) }
 			setAvatarurl(returnUrl)
 
 

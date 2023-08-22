@@ -5,10 +5,11 @@ import Image from "next/image"
 import Link from 'next/link'
 import { ChangeEvent, useState } from 'react';
 import { updateUser, updateProfileImage } from "@/actions/userSettings"
-import { useTransition } from 'react'
+import { useTransition, useEffect } from 'react'
 import { experimental_useOptimistic as useOptimistic, useRef } from 'react'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { useRouter } from 'next/navigation'
+import { useNextStore } from '@/store/NextStore'
 
 import { redirect } from "next/navigation";
 
@@ -30,8 +31,25 @@ export default function SettingsForm(prop: Profile | any) {
 	const [isPending, startTransition] = useTransition()
 	const [imagesuccess, setImagesuccess] = useState(false)
 	const [savesuccess, setSavesuccess] = useState(false)
+	const setCurrentProfile = useNextStore((state) => state.setCurrentProfile)
+	const current_username = useNextStore((state) => state.current_profile.username)
 
-	/* 	const [optimisticusername, setOptimisticusername] = useOptimistic(prop.username) */
+	useEffect(() => {
+		const channel = supabase.channel('settings').on('postgres_changes', {
+			event: '*',
+			schema: 'public',
+			table: 'profiles',
+			filter: `username=neq.${profile.username}`
+		}, (payload) => {
+			const newrow: any = payload.new
+			setCurrentProfile(newrow)
+
+
+		}).subscribe()
+		return () => {
+			supabase.removeChannel(channel)
+		}
+	})
 
 
 
@@ -56,7 +74,7 @@ export default function SettingsForm(prop: Profile | any) {
 	return (
 
 		<div className="relative  bg-gray-700  rounded-md p-8 w-1/2 h-3/4 font-proxima ">
-			<p className="text-emerald-300 text-2xl  ml-28 mt-12 h-fit w-fit">Hello {profile.username}</p>
+			<p className="text-emerald-300 text-2xl  ml-28 mt-12 h-fit w-fit">Hello {current_username}</p>
 			<label htmlFor="avatar">
 				<Image
 					className="rounded-full h-44 w-44 object-cover absolute right-12 cursor-pointer"

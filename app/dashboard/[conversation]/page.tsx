@@ -30,7 +30,7 @@ export default async function Dashboard() {
 
 	const profile: Profile = profiles.data ? profiles.data[0] : null
 
-	console.log(profile)
+
 	return (
 		<>
 			<Navbar profile={profile} />

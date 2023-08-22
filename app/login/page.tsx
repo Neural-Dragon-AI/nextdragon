@@ -14,7 +14,7 @@ export default async function SignIn() {
 	const session = await getSession()
 
 	if (session) {
-		redirect("/dashboard");
+		redirect("/dashboard/start");
 	}
 
 	return (

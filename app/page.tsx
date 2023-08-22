@@ -9,7 +9,7 @@ export default async function Home() {
 		redirect("/login");
 	}
 	else {
-		redirect("/dashboard");
+		redirect("/dashboard/start");
 	}
 
 }

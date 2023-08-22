@@ -1,11 +1,18 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Profile, Conversation } from "@/store/NextStore"
 
 
-export const Editor: React.FC<Conversation> = ({ conversation }) => {
-	console.log(conversation)
+interface Profile {
+	id: number;
+	username: string;
+	openaiApiKey: string;
+	avatarUrl: string;
+}
+
+
+export const WorkingMemory: React.FC = () => {
+
 	/* const [username, setUsername] = useState(prop.prop.username) */
 	/**/
 	/* const supabase = createClientComponentClient() */
@@ -26,7 +33,7 @@ export const Editor: React.FC<Conversation> = ({ conversation }) => {
 
 	return (
 		<>
-			<div className="w-[40%]  rounded-md p-2">
+			<div className="w-[48%] bg-yellow-200 rounded-md p-2">
 				<p className="fonta-proxima text-white text-2xl self-center">Editor</p>
 			</div>
 		</>
