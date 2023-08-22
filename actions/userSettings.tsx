@@ -12,8 +12,6 @@ export async function updateUser(e: FormData) {
 	console.log(username, openaiApiKey, id)
 	const supabase = _createServerComponentClient()
 	await supabase.from('profiles').update({ username: username, openaiApiKey: openaiApiKey }).match({ id: id })
-
-
 }
 
 

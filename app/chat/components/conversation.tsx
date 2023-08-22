@@ -15,7 +15,7 @@ interface Message {
 }
 
 interface Conversation {
-	conversation: Message[] | null
+	conversation: Message[] 
 }
 
 export const Conversation: React.FC<Conversation> = ({ conversation }) => {

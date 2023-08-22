@@ -13,8 +13,10 @@ interface NavbarProps {
 
 
 export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
+
 	const setCurrentProfile = useNextStore(state => state.setCurrentProfile)
 	const currentProfile = useNextStore(state => state.current_profile)
+
 	if (currentProfile.stash_mapping.length === 0) {
 		setCurrentProfile(profile)
 	}

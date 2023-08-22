@@ -99,7 +99,7 @@ export default function SettingsForm(prop: Profile | any) {
 					<input hidden name="id" type="string" value={profile.id} readOnly />
 					<label className="mb-1 text-emerald-300" >Username</label>
 					<div className="mb-8 flex flex-row space-x-2">
-						<input name="username" placeholder={profile.username} defaultValue={profile.username}
+						<input name="username" placeholder={current_username} defaultValue={current_username}
 							type="text" onChange={() => { setSavesuccess(false) }}
 							className="resize-none h-8 overflow-hidden w-1/2 border-none rounded-md px-4 text-sm 
 				  invalid:ring-red-500  bg-white/[.1] ring-none dark:outline-white
