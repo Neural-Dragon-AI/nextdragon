@@ -1,23 +1,24 @@
 import { _createServerComponentClient } from "@/actions/serverCookies";
+import { createClient } from "@supabase/supabase-js"
 import { getSession } from "@/actions/serverCookies";
 import { unstable_cache } from 'next/cache'
 import { redirect } from "next/navigation";
 import { Suspense } from 'react'
-import { Tree, FileSystemObject } from './tree/Tree'
-import Realtime from './realtime'
+import { Tree } from './components/tree/Tree'
+import { Editor } from './components/messageEditor'
+import { WorkingMemory } from './components/workingMemory'
+import { Profile } from "@/store/NextStore"
 
-interface Profile {
-	id: number;
-	username: string;
-	openaiApiKey: string;
-	avatarUrl: string;
-	stash_mapping: FileSystemObject
-}
+
+
 
 
 
 export default async function Dashboard() {
-	const supabase = _createServerComponentClient();
+
+
+/* 	const _supabase = _createServerComponentClient(); */
+
 
 	const session = await getSession();
 
@@ -25,29 +26,49 @@ export default async function Dashboard() {
 		redirect("/login");
 	}
 
-	const data = await unstable_cache(
+	/* const data = await unstable_cache( */
+	/**/
+	/* 	async () => { */
+	/* 		const data = await _supabase.from('profiles').select('*') */
+	/* 		return data */
+	/* 	}, */
+	/* 	['account'], */
+	/* 	{ */
+	/* 		tags: ['account'], */
+	/* 		revalidate: 1, */
+	/* 	} */
+	/* )() */
+
+
+	const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!, {
+		db: { schema: "conversations" }
+	})
+	const conv = await unstable_cache(
 
 		async () => {
-			const data = await supabase.from('profiles').select('*')
+			const data = await supabase.from('conversazione2').select('*').order('timestamp', { ascending: true })
 			return data
 		},
-		['account'],
+		['conv'],
 		{
-			tags: ['account'],
+			tags: ['conv'],
 			revalidate: 1,
 		}
 	)()
 
-	const profile: Profile | any = data.data ? data.data[0] : null
-/* 	console.log(profile) */
+
+/* 	const profile: Profile | any = data.data ? data.data[0] : null */
+
+/* 	console.log(conv) */
 
 	return (
-		<div className="w-3/4 bg-gray-700 p-4 rounded-md h-[90%] flex flex-col">
-			<Realtime prop={profile} />
-			<div className="flex flex-col h-full space-y-4 bg-black/[.3] rounded-md">
+		<div className="w-[98%]  rounded-md h-[90%] flex flex-row justify-between">
 
-				<Tree data={profile.stash_mapping} />
-			</div>
+			<section className="w-[20%] overflow-auto  rounded-md p-2">
+				<Tree  />
+			</section>
+			<Editor conversation={conv.data} />
+			<WorkingMemory />
 		</div>
 	)
 }

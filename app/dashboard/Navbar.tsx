@@ -4,19 +4,24 @@ import { useRouter } from "next/navigation";
 import Image from "next/image"
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { Profile, useNextStore } from '@/store/NextStore'
+import useStore from '@/store/useStore'
 
-
-interface Profile {
-	id: number;
-	username: string;
-	openaiApiKey: string;
-	avatarUrl: string;
+interface NavbarProps {
+	profile: Profile
 }
 
 
-export default function Navbar(prop: Profile | any) {
+export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 
-	const profile = prop.profile
+	/* const bears = useStore(useBearStore, (state) => state.bears) */
+
+
+	const store = useStore(useNextStore, (state) => state)
+	const setCurrentProfile = store?.setCurrentProfile || null
+
+	if (setCurrentProfile) { setCurrentProfile(profile) }
+
 	const router = useRouter();
 	const supabase = createClientComponentClient()
 
@@ -36,6 +41,7 @@ export default function Navbar(prop: Profile | any) {
 			console.log(newrow.avatarUrl)
 			const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${profile.id}/${newrow.avatarUrl}.jpg`)
 			const returnUrl = publicUrl.data.publicUrl
+			if (setCurrentProfile) { setCurrentProfile(profile) }
 			setAvatarurl(returnUrl)
 
 
@@ -52,10 +58,11 @@ export default function Navbar(prop: Profile | any) {
 
 
 	return (
-		<nav className=" flex h-9 my-3 bg-gray-700 place-items-center w-[98%] shadow-md rounded-md z-10">
+		<nav className=" flex h-9 my-3 bg-gray-800 place-items-center w-[98%] shadow-md rounded-md z-10">
 			<div className="absolute top-2 right-14 text-black flex flex-row space-x-4">
 				<section className="group inline-block relative">
 					<div className="w-40 h-fit text-black font-bold flex justify-center">
+
 						<Image
 							className="rounded-full h-10 w-10 object-cover"
 							src={avatarUrl}
@@ -63,8 +70,9 @@ export default function Navbar(prop: Profile | any) {
 							height={25}
 							alt="Account"
 						/>
+
 					</div>
-					<div className="space-y-3 bg-gray-700 absolute 
+					<div className="space-y-3 bg-gray-800 absolute 
             right-0 top-full w-40 transform rounded-b-md mt-0
             px-2 pt-5 pb-2 text-sm scale-y-0 group-hover:scale-y-100 origin-top
             text-black  transition duration-200 

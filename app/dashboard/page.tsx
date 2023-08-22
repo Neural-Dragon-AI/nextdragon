@@ -1,15 +1,9 @@
-import Navbar from "./Navbar"
+import { Navbar } from "./Navbar"
 import { _createServerComponentClient } from "@/actions/serverCookies";
 import { getSession } from "@/actions/serverCookies";
 import { unstable_cache } from 'next/cache'
 import { redirect } from "next/navigation";
-
-interface Profile {
-	id: number;
-	username: string;
-	openaiApiKey: string;
-	avatarUrl: string;
-}
+import { Profile } from "@/store/NextStore"
 
 
 export default async function Dashboard() {
@@ -21,11 +15,11 @@ export default async function Dashboard() {
 		redirect("/login");
 	}
 
-	const data = await unstable_cache(
+	const profiles = await unstable_cache(
 
 		async () => {
-			const data = await supabase.from('profiles').select('id,username,openaiApiKey,avatarUrl')
-			return data
+			const profiles = await supabase.from('profiles').select('*')
+			return profiles
 		},
 		['account'],
 		{
@@ -34,8 +28,9 @@ export default async function Dashboard() {
 		}
 	)()
 
-	const profile: Profile | any = data.data ? data.data[0] : null
+	const profile: Profile = profiles.data ? profiles.data[0] : null
 
+	console.log(profile)
 	return (
 		<>
 			<Navbar profile={profile} />

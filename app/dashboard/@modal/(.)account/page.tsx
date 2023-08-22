@@ -4,13 +4,7 @@ import { _createServerComponentClient } from "@/actions/serverCookies";
 import { getSession } from "@/actions/serverCookies";
 import { unstable_cache } from 'next/cache'
 import { redirect } from "next/navigation";
-
-interface Profile {
-	id: number;
-	username: string;
-	openaiApiKey: string;
-	avatarUrl: string;
-}
+import { Profile } from "@/store/NextStore"
 
 
 export default async function AccountModal() {

@@ -1,0 +1,24 @@
+'use client'
+import { FileTreeType } from './Tree'
+import { useNextStore } from '@/store/NextStore';
+
+
+interface FileTreeProps {
+	data: FileTreeType;
+}
+
+export const FileTree: React.FC<FileTreeProps> = ({ data }) => {
+	const active_chat = useNextStore(state => state.active_chat)
+	const setActiveChat = useNextStore(state => state.setActiveChat)
+
+	console.log(active_chat)
+
+	return <button
+				onClick={() => setActiveChat(data.name)}
+				className={`flex flex-row items-center overflow-auto rounded-md p-0.5 ${data.name === active_chat ? 'bg-white/[.5] text-black' : 'text-white'}`}>
+		<div className="h-4 w-4">
+			<svg fill="#ffffff" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>file2</title> <path d="M11 15h1v-1h-1v1zM11 18h1v-1h-1v1zM11 12h1v-1h-1v1zM11 21h1v-1h-1v1zM11 24h1v-1h-1v1zM13 18h8v-1h-8v1zM13 12h8v-1h-8v1zM20.938 4h-13.938v24h18v-20l-4.062-4zM23 25.938h-14v-19.938h10v2.938h4v17zM13 21h8v-1h-8v1zM13 15h8v-1h-8v1zM13 24h8v-1h-8v1z"></path> </g></svg>
+		</div>
+		<div className=" font-proxima  w-fit h-6 p-0.5 text-sm  rounded-md cursor-pointer">{data.name}</div>
+	</button>
+}

@@ -3,8 +3,8 @@ import { getSession } from "@/actions/serverCookies";
 import { unstable_cache } from 'next/cache'
 import { redirect } from "next/navigation";
 import { Conversation } from "./components/conversation"
-import { IndexQuery } from "./components/indexquery"
-import { BabyDragonActions } from "./components/bdactions"
+import { IndexQuery } from "./components/indexQuery"
+import { BabyDragonActions } from "./components/bdActions"
 import { createClient } from "@supabase/supabase-js"
 
 export default async function Chat() {
@@ -19,11 +19,11 @@ export default async function Chat() {
 		redirect("/login");
 	}
 
-	const data = await unstable_cache(
+	const conversazione = await unstable_cache(
 
 		async () => {
-			const data = await supabase.from('conversazione2').select('*').order('timestamp', { ascending: true })
-			return data
+			const conversazione = await supabase.from('conversazione2').select('*').order('timestamp', { ascending: true })
+			return conversazione
 		},
 		['conversazione'],
 		{
@@ -36,7 +36,7 @@ export default async function Chat() {
 		<>
 			<section className="flex flex-row justify-between  w-[99.5%] h-[99%] ">
 				<BabyDragonActions />
-				<Conversation conversation={data.data} />
+				<Conversation conversation={conversazione.data} />
 				<IndexQuery />
 			</section>
 		</>

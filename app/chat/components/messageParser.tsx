@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 
-import syntaxparser from './syntaxparser'
+import syntaxparser from './syntaxParser'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 

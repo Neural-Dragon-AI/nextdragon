@@ -2,7 +2,7 @@
 
 
 import { Virtuoso } from 'react-virtuoso';
-import { UserMessage, BabyDragonMessage } from './message_parser';
+import { UserMessage, BabyDragonMessage } from './messageParser';
 
 import { useRef } from 'react'
 
@@ -15,7 +15,7 @@ interface Message {
 }
 
 interface Conversation {
-	conversation: Message[]
+	conversation: Message[] | null
 }
 
 export const Conversation: React.FC<Conversation> = ({ conversation }) => {
