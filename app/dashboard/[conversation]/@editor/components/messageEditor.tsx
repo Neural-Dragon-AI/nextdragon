@@ -9,7 +9,7 @@ export const MessageEditor: React.FC<Conversation> = ({ conversation }) => {
 		try {
 			return (
 				<>
-					<div className="w-[60%]  rounded-md p-2 ">
+					<div className="w-[60%]  rounded-md px-2 ">
 						<div className="h-[8%] bg-white/[.1] w-full rounded-md mb-2"></div>
 						<section className="relative h-[90%] w-full overflow-y-auto   p-0 selection:bg-[#eaeda6] selection:text-[black] ">
 							<Virtuoso
@@ -44,7 +44,7 @@ export const MessageEditor: React.FC<Conversation> = ({ conversation }) => {
 			console.error(error);
 			return (
 				<>
-					<div className="w-[48%]  rounded-md p-2 bg-red-500">
+					<div className="w-[60%] rounded-md p-2 bg-red-500">
 						<p className="fonta-proxima text-black text-2xl self-center">
 							Error
 						</p>
@@ -56,7 +56,7 @@ export const MessageEditor: React.FC<Conversation> = ({ conversation }) => {
 	else {
 		return (
 			<>
-				<div className="w-[48%]  rounded-md p-2 ">
+				<div className="w-[60%]  rounded-md p-2 ">
 
 				</div>
 			</>

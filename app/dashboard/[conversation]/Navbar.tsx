@@ -33,15 +33,13 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 		const channel = supabase.channel('navbar').on('postgres_changes', {
 			event: '*',
 			schema: 'public',
-			table: 'profiles',
-			filter: `avatarUrl=neq.${profile.avatarUrl}`
-		}, (payload) => {
+			table: 'profiles'		}, (payload) => {
 			const newrow: any = payload.new
 			console.log(newrow.avatarUrl)
 			const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${profile.id}/${newrow.avatarUrl}.jpg`)
 			const returnUrl = publicUrl.data.publicUrl
 			setAvatarurl(returnUrl)
-
+		  setCurrentProfile(newrow)
 
 		}).subscribe()
 		return () => {

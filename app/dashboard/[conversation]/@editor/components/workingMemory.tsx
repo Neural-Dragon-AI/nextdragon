@@ -33,8 +33,8 @@ export const WorkingMemory: React.FC = () => {
 
 	return (
 		<>
-			<div className="w-[40%]  rounded-md p-2">
-				<p className="fonta-proxima text-white text-2xl self-center">Editor</p>
+			<div className="w-[40%] bg-white/[.1]  rounded-md p-2">
+				<p className="fonta-proxima text-white text-2xl self-center"></p>
 			</div>
 		</>
 	)

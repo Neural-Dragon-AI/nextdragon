@@ -39,9 +39,9 @@ export default function SettingsForm(prop: Profile | any) {
 			event: '*',
 			schema: 'public',
 			table: 'profiles',
-			filter: `username=neq.${profile.username}`
 		}, (payload) => {
 			const newrow: any = payload.new
+		  console.log(newrow)
 			setCurrentProfile(newrow)
 
 

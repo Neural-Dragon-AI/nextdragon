@@ -1,6 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-
 
 export interface FileTreeType {
 	type: "file";
@@ -15,8 +13,6 @@ export interface FolderTreeType {
 }
 
 export type FileSystemObject = FileTreeType | FolderTreeType;
-
-
 
 export interface Profile {
 	id: number;
@@ -45,17 +41,13 @@ export const extractFolderNames = (items: FileSystemObject[]): Folders => {
 	let result: Folders = {};
 	for (const item of items) {
 		if (item.type === 'folder') {
-			result[item.name] = false; // default value, supponendo che le cartelle siano chiuse di default
-			// Ricorsivamente controlla anche i children di questa cartella
+			result[item.name] = false;	
 			const childFolders = extractFolderNames(item.childrens);
 			result = { ...result, ...childFolders };
 		}
 	}
 	return result;
 };
-
-
-
 
 interface NextStore {
 
@@ -71,54 +63,46 @@ interface NextStore {
 	setCurrentProfile: (current_profile: Profile) => void;
 }
 
-export const useNextStore = create(
-	persist<NextStore>(
-		(set, get) => ({
-			config_history: [],
-			active_chat: '',
-			current_profile: { id: 0, username: 'test', openaiApiKey: '', avatarUrl: '', stash_mapping: [] },
-			folders: {},
+export const useNextStore = create<NextStore>(
+	(set, get) => ({
+		config_history: [],
+		active_chat: '',
+		current_profile: { id: 0, username: 'test', openaiApiKey: '', avatarUrl: '', stash_mapping: [] },
+		folders: {},
 
-			addToHistory: (item) => set((state) => ({ config_history: [item, ...state.config_history] })),
+		addToHistory: (item) => set((state) => ({ config_history: [item, ...state.config_history] })),
 
-			setActiveChat: (chat_id) => set({ active_chat: chat_id }),
+		setActiveChat: (chat_id) => set({ active_chat: chat_id }),
 
-			setCurrentProfile: (new_profile) => {
-				set((state) => {
-					const newFolders = extractFolderNames(new_profile.stash_mapping);
-					return {
-						...state,
-						current_profile: new_profile,
-						folders: newFolders
-					};
-				});
-			},
+		setCurrentProfile: (new_profile) => {
+			set((state) => {
+				const newFolders = extractFolderNames(new_profile.stash_mapping);
+				return {
+					...state,
+					current_profile: new_profile,
+					folders: newFolders
+				};
+			});
+		},
 
-			toggleFolderStatus: (folderKey: string) => {
-				set((state) => {
-					const currentStatus = state.folders[folderKey];
+		toggleFolderStatus: (folderKey: string) => {
+			set((state) => {
+				const currentStatus = state.folders[folderKey];
 
-					// Se la chiave non esiste nel tuo stato, potresti voler gestire questo caso separatamente.
-					if (currentStatus === undefined) {
-						console.error(`Folder with key ${folderKey} does not exist.`);
-						return state;
+				// Se la chiave non esiste nel tuo stato, potresti voler gestire questo caso separatamente.
+				if (currentStatus === undefined) {
+					console.error(`Folder with key ${folderKey} does not exist.`);
+					return state;
+				}
+
+				return {
+					...state,
+					folders: {
+						...state.folders,
+						[folderKey]: !currentStatus
 					}
-
-					return {
-						...state,
-						folders: {
-							...state.folders,
-							[folderKey]: !currentStatus
-						}
-					};
-				});
-			},
-
-
-
-		}),
-		{
-			name: "config"
-		}
-	))
-	;
+				};
+			});
+		},
+	})
+)

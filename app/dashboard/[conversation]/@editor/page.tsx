@@ -8,8 +8,8 @@ import { Suspense } from 'react'
 const EditorSkeleton = () => {
 	return (
 		<>
-			<div className="w-[48%]  rounded-md p-2 bg-blue-200">
-				<p className="fonta-proxima text-black text-2xl self-center">
+			<div className="w-[60%]  rounded-md p-2 bg-blue-200">
+				<p className="fonta-proxima text-white text-2xl self-center">
 					Loading...
 				</p>
 			</div>
@@ -32,7 +32,7 @@ export default async function Editor({ params }: { params: { conversation: strin
 	console.log(conv)
 
 	return (
-		<div className=" w-full h-full flex flex-row justify-evenly">
+		<div className=" w-full h-full flex flex-row justify-between">
 			{conv ?
 				<Suspense fallback={<EditorSkeleton />}>
 					<MessageEditor conversation={conv} />
