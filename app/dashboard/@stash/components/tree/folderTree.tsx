@@ -12,12 +12,12 @@ export const FolderTree: React.FC<FolderTreeProps> = ({ data, children }) => {
 
 	const folders = useNextStore((state) => state.folders)
   const toggleFolderStatus = useNextStore((state) => state.toggleFolderStatus)
-
+  const [ open, setOpen ] = useState(false)
 
 	return (
 
 		<section className="w-full">
-			<div className="flex flex-row space-x-1  p-2 w-fit  rounded-md cursor-pointer" onClick={() => toggleFolderStatus(data.name)} >
+			<div className="flex flex-row space-x-1  p-2 w-fit  rounded-md cursor-pointer" onClick={() => setOpen(!open)} >
 				<Image
 					src="https://www.svgrepo.com/show/514322/folder.svg"
 					width={20}
@@ -28,7 +28,7 @@ export const FolderTree: React.FC<FolderTreeProps> = ({ data, children }) => {
 			</div>
 
 			<section
-				className={`  overflow-hidden   ${folders[data.name] ? 'h-fit flex flex-col  w-fit px-2 py-1 mt-2 bg-black/[.3]  rounded-md   ml-12' : 'h-0 w-0'}`}>
+				className={`  overflow-hidden   ${open ? 'h-fit flex flex-col  w-fit px-2 py-1 mt-2 bg-black/[.3]  rounded-md   ml-12' : 'h-0 w-0'}`}>
 				{children}
 			</section>
 		</section>

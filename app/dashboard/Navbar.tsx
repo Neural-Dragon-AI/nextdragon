@@ -3,9 +3,9 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import Image from "next/image"
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useTransition } from 'react'
 import { Profile, useNextStore } from '@/store/NextStore'
-
+import { revalidateAccount } from '@/actions/userSettings'
 
 interface NavbarProps {
 	profile: Profile
@@ -14,12 +14,13 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 
-	const setCurrentProfile = useNextStore(state => state.setCurrentProfile)
-	const currentProfile = useNextStore(state => state.current_profile)
+	/* const setCurrentProfile = useNextStore(state => state.setCurrentProfile) */
+	/* const currentProfile = useNextStore(state => state.current_profile) */
+	const [isPending, startTransition] = useTransition()
 
-	if (currentProfile.stash_mapping.length === 0) {
-		setCurrentProfile(profile)
-	}
+	/* if (currentProfile.stash_mapping.length === 0) { */
+	/* 	setCurrentProfile(profile) */
+	/* } */
 
 	const router = useRouter();
 	const supabase = createClientComponentClient()
@@ -33,14 +34,15 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 		const channel = supabase.channel('navbar').on('postgres_changes', {
 			event: '*',
 			schema: 'public',
-			table: 'profiles'		}, (payload) => {
+			table: 'profiles'
+		}, (payload) => {
 			const newrow: any = payload.new
 			console.log(newrow.avatarUrl)
 			const publicUrl = supabase.storage.from('avatars').getPublicUrl(`${profile.id}/${newrow.avatarUrl}.jpg`)
 			const returnUrl = publicUrl.data.publicUrl
+			startTransition(() => revalidateAccount())
 			setAvatarurl(returnUrl)
-		  setCurrentProfile(newrow)
-
+			/* 			setCurrentProfile(newrow) */
 		}).subscribe()
 		return () => {
 			supabase.removeChannel(channel)
@@ -54,10 +56,10 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 
 
 	return (
-		<nav className=" flex h-9 my-3 bg-gray-800 place-items-center w-[98%] shadow-md rounded-md z-10">
-			<div className="absolute top-2 right-14 text-black flex flex-row space-x-4">
-				<section className="group inline-block relative">
-					<div className="w-40 h-fit text-black font-bold flex justify-center">
+		<nav className="flex h-8  flex-row  place-items-center w-full justify-end shadow-lg z-10">
+
+				<section className="group inline-block relative ">
+					<div className="w-16  h-16  cursor-help text-black font-bold mt-8 flex flex-row justify-center place-items-center">
 
 						<Image
 							className="rounded-full h-10 w-10 object-cover"
@@ -68,13 +70,13 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 						/>
 
 					</div>
-					<div className="space-y-3 bg-gray-800 absolute 
-            right-0 top-full w-40 transform rounded-b-md mt-0
+					<div className="space-y-3 bg-black absolute border-emerald-50/[.3] border-b-2 border-l-2 rounded-bl-md
+            right-0 top-full w-40 transform  mt-0
             px-2 pt-5 pb-2 text-sm scale-y-0 group-hover:scale-y-100 origin-top
-            text-black  transition duration-200 
-            ease-in-out  font-proxima font-bold">
+            text-black  transition duration-100 
+            ease-in-out  font-proxima font-bold shadow-lg">
 
-						<Link href="dashboard/account" className="flex flex-row w-full justify-evenly cursor-pointer hover:bg-black/[.2] text-emerald-400 rounded-md p-0.5">
+						<Link href="dashboard/account" className="flex flex-row w-full justify-evenly cursor-pointer hover:brightness-150 hover:bg-emerald-50/[.5] text-emerald-400 rounded-md p-0.5">
 
 							<Image
 
@@ -86,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 							<p className="h-25 py-1 ml-2">Account</p>
 						</Link>
 
-						<button onClick={handleSignOut} className="flex flex-row w-full justify-evenly cursor-pointer text-emerald-400 hover:bg-black/[.2] rounded-md p-0.5">
+						<button onClick={handleSignOut} className=" flex flex-row w-full justify-evenly cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] rounded-md p-0.5">
 							<Image
 
 								src="https://www.svgrepo.com/show/469802/sign-out-alt.svg"
@@ -100,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 					</div>
 				</section>
 
-			</div>
+
 		</nav>
 	)
 };
