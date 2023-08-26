@@ -2,19 +2,41 @@
 
 import { Conversation } from "@/store/NextStore"
 import { Virtuoso } from 'react-virtuoso';
+import { useNextStore } from '@/store/NextStore';
+import { useRef, useEffect } from 'react'
+
+
 export const MessageEditor: React.FC<Conversation> = ({ conversation }) => {
+	const activeIndex = useNextStore(state => state.active_index)
+
+
+	const virtuoso = useRef(null);
+
+	useEffect(() => {
+		if (activeIndex !== null && virtuoso.current) {
+			//@ts-ignore
+			virtuoso.current.scrollToIndex({
+				index: activeIndex,
+				align: "start",
+				behavior: "smooth"
+			})
+		}
+
+	}, [activeIndex])
+
 
 	if (conversation.length > 0) {
 
 		try {
 			return (
 				<>
-					<div className="w-full overflow-y-auto  rounded-md relative  ">
+					<div className="w-full overflow-y-auto  rounded-md relative mb-3  ">
 						<div className="absolute top-0 h-16 border-b-[1px]  border-white/[.4]  w-full  mb-10"></div>
 						<section className="absolute top-28 h-[90%] w-full overflow-y-auto   p-0 selection:bg-[#eaeda6] selection:text-[black] ">
 							<Virtuoso
-								alignToBottom={true}
+								/* 								alignToBottom={true} */
 								data={conversation}
+								ref={virtuoso}
 								followOutput={'smooth'}
 								itemContent={(index, message) => {
 									if (message.role == 'user') {

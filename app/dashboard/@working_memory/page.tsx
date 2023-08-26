@@ -1,7 +1,7 @@
 import { _createServerComponentClient } from "@/actions/serverCookies";
 import { getSession } from "@/actions/serverCookies";
 import { unstable_cache } from 'next/cache'
-
+import { WorkingEditor } from './components/workingEditor'
 import { redirect } from "next/navigation";
 
 
@@ -14,26 +14,14 @@ export default async function Working_Memory() {
 		redirect("/login");
 	}
 
-	const stash_mapping = await unstable_cache(
 
-		async () => {
-			const { data: stash } = await supabase.from('profiles').select('stash_mapping')
-			return stash
-		},
-		['stash_mapping'],
-		{
-			tags: ['stash_mapping'],
-			revalidate: 1,
-		}
-	)()
 
 
 	return (
 
 
-		<section className="w-full h-full  overflow-auto  rounded-md p-1">
-			<div className="border-white/[.3] border-r-2  h-full w-full ">
-			</div>
+		<section className="w-[90%] h-full  overflow-auto  rounded-md mr-2 pb-3 justify-end flex flex-col">
+			<WorkingEditor />
 		</section>
 
 	)

@@ -31,8 +31,8 @@ export default async function Stash() {
 	return (
 
 
-		<section className="w-full h-full border-l-2 border-white/[.2] overflow-auto   p-4">
-			<Tree stash_mapping={stash_mapping[0].stash_mapping} />
+		<section className="w-full h-full  overflow-auto   p-2">
+				{stash_mapping ? <Tree stash_mapping={stash_mapping[0].stash_mapping} /> : null}
 		</section>
 
 	)

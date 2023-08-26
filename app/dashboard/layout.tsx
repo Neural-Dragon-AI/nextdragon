@@ -40,7 +40,7 @@ export default async function Layout(props: {
 
 
 	return (
-		<div className="h-full w-full bg-transparent m-0 p-0 z-0 justify-between items-center overflow-y-auto   ">
+		<div className="h-full w-full bg-transparent m-0 p-0 z-0 justify-evenly items-center overflow-y-auto   ">
 
 			<section className="grid grid-cols-4 gap-0 h-full">
 
@@ -67,7 +67,7 @@ export default async function Layout(props: {
 
 
 
-				<div className="  w-full rounded-md h-full overflow-y-auto flex flex-row justify-between ">
+				<div className="  w-full rounded-md h-full overflow-y-auto flex flex-row justify-end">
 					{props.working_memory}
 				</div>
 

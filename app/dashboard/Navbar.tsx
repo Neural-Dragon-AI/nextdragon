@@ -56,51 +56,53 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 
 
 	return (
-		<nav className="flex h-8  flex-row  place-items-center w-full justify-end shadow-lg z-10">
+		<nav className="flex h-8 border-x-2 border-white/[.3] border-b-2 rounded-b-3xl flex-row  place-items-center w-full justify-end space-x-12 shadow-lg z-10">
+			<div className="text-white">Hello</div>
+			<div className="text-white">Hello</div>
+			<div className="text-white">Hello</div>
+			<section className="group inline-block relative mt-2 ">
+				<div className="w-16  h-16  cursor-help text-black font-bold flex flex-row justify-center place-items-center">
 
-				<section className="group inline-block relative ">
-					<div className="w-16  h-16  cursor-help text-black font-bold mt-8 flex flex-row justify-center place-items-center">
+					<Image
+						className="rounded-full h-10 w-10 object-cover"
+						src={avatarUrl}
+						width={25}
+						height={25}
+						alt="Account"
+					/>
+
+				</div>
+				<div className="space-y-3 bg-black absolute border-emerald-50/[.3] border-b-2 border-l-2 rounded-bl-md
+            right-0 top-3/4 w-40 transform  mt-0
+            px-2 pt-3 pb-2 text-sm scale-y-0 group-hover:scale-y-100 origin-top
+            text-black  transition duration-100 
+            ease-in-out  font-proxima font-bold shadow-lg">
+
+					<Link href="dashboard/account" className="flex flex-row w-full justify-evenly cursor-pointer hover:brightness-150 hover:bg-emerald-50/[.5] text-emerald-400 rounded-md p-0.5">
 
 						<Image
-							className="rounded-full h-10 w-10 object-cover"
-							src={avatarUrl}
+
+							src="https://www.svgrepo.com/show/469755/settings.svg"
 							width={25}
 							height={25}
 							alt="Account"
 						/>
+						<p className="h-25 py-1 ml-2">Account</p>
+					</Link>
 
-					</div>
-					<div className="space-y-3 bg-black absolute border-emerald-50/[.3] border-b-2 border-l-2 rounded-bl-md
-            right-0 top-full w-40 transform  mt-0
-            px-2 pt-5 pb-2 text-sm scale-y-0 group-hover:scale-y-100 origin-top
-            text-black  transition duration-100 
-            ease-in-out  font-proxima font-bold shadow-lg">
+					<button onClick={handleSignOut} className=" flex flex-row w-full justify-evenly cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] rounded-md p-0.5">
+						<Image
 
-						<Link href="dashboard/account" className="flex flex-row w-full justify-evenly cursor-pointer hover:brightness-150 hover:bg-emerald-50/[.5] text-emerald-400 rounded-md p-0.5">
+							src="https://www.svgrepo.com/show/469802/sign-out-alt.svg"
+							width={25}
+							height={25}
+							alt="SignOut"
+						/>
 
-							<Image
-
-								src="https://www.svgrepo.com/show/469755/settings.svg"
-								width={25}
-								height={25}
-								alt="Account"
-							/>
-							<p className="h-25 py-1 ml-2">Account</p>
-						</Link>
-
-						<button onClick={handleSignOut} className=" flex flex-row w-full justify-evenly cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] rounded-md p-0.5">
-							<Image
-
-								src="https://www.svgrepo.com/show/469802/sign-out-alt.svg"
-								width={25}
-								height={25}
-								alt="SignOut"
-							/>
-
-							<a className="h-25 py-1 ml-2 " >Logout&nbsp;&nbsp;</a>
-						</button>
-					</div>
-				</section>
+						<a className="h-25 py-1 ml-2 " >Logout&nbsp;&nbsp;</a>
+					</button>
+				</div>
+			</section>
 
 
 		</nav>

@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { createClient } from "@supabase/supabase-js"
 
 export interface FileTreeType {
 	type: "file";
@@ -30,7 +31,7 @@ export interface Message {
 }
 
 export interface Conversation {
-	conversation: Message[]
+	conversation: Message[] | []
 }
 
 export interface Folders {
@@ -41,7 +42,7 @@ export const extractFolderNames = (items: FileSystemObject[]): Folders => {
 	let result: Folders = {};
 	for (const item of items) {
 		if (item.type === 'folder') {
-			result[item.name] = false;	
+			result[item.name] = false;
 			const childFolders = extractFolderNames(item.childrens);
 			result = { ...result, ...childFolders };
 		}
@@ -53,14 +54,20 @@ interface NextStore {
 
 	config_history: string[];
 	active_chat: string;
+	current_conversation: Message[];
 	current_profile: Profile;
 	folders: Folders;
+	active_index: number;
+	work_conversation: Message[];
 
 
 	toggleFolderStatus: (folderKey: string) => void;
-	addToHistory: (item: string) => void;
+	addToWorkingChat: (item: Message[]) => void;
 	setActiveChat: (activeChatIndex: string) => void;
 	setCurrentProfile: (current_profile: Profile) => void;
+	fetchConversation: (converation_id: string) => void;
+	setActiveIndex: (active_index: number) => void;
+
 }
 
 export const useNextStore = create<NextStore>(
@@ -69,8 +76,11 @@ export const useNextStore = create<NextStore>(
 		active_chat: '',
 		current_profile: { id: 0, username: 'test', openaiApiKey: '', avatarUrl: '', stash_mapping: [] },
 		folders: {},
+		current_conversation: [],
+		work_conversation: [],
+		active_index: 0,
 
-		addToHistory: (item) => set((state) => ({ config_history: [item, ...state.config_history] })),
+		addToWorkingChat: (item) => set((state) => ({ work_conversation: [...state.work_conversation, ...item] })),
 
 		setActiveChat: (chat_id) => set({ active_chat: chat_id }),
 
@@ -84,6 +94,27 @@ export const useNextStore = create<NextStore>(
 				};
 			});
 		},
+
+		fetchConversation: async (conversation_id) => {
+			const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!, {
+				db: { schema: "conversations" }
+			})
+			const response = await supabase.from(conversation_id.replace(/\s/g, "").toLowerCase()).select('*').order('timestamp', { ascending: true })
+			if (response.data) {
+				set({ current_conversation: response.data })
+			}
+			else {
+				set({ current_conversation: [] })
+
+			}
+
+		},
+
+		setActiveIndex: async (active_index) => {
+			set({ active_index: active_index })
+		},
+
+
 
 		toggleFolderStatus: (folderKey: string) => {
 			set((state) => {
