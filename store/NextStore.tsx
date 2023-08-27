@@ -55,18 +55,21 @@ interface NextStore {
 	config_history: string[];
 	active_chat: string;
 	current_conversation: Message[];
-	current_profile: Profile;
+	current_profile_id: string;
 	folders: Folders;
 	active_index: number;
-	work_conversation: Message[];
+	work_conversations: Message[][];
+	active_work_conversation: number;
 
 
 	toggleFolderStatus: (folderKey: string) => void;
-	addToWorkingChat: (item: Message[]) => void;
+	pushToWorkConversation: (index: number, item: Message[]) => void;
+	replaceAllWorkConversations: (newWorkConversations: Message[][]) => void;
 	setActiveChat: (activeChatIndex: string) => void;
-	setCurrentProfile: (current_profile: Profile) => void;
+	setCurrentProfileId: (current_profile_id: string) => void;
 	fetchConversation: (converation_id: string) => void;
 	setActiveIndex: (active_index: number) => void;
+	setActiveWorkConversation: (index: number) => void;
 
 }
 
@@ -74,25 +77,35 @@ export const useNextStore = create<NextStore>(
 	(set, get) => ({
 		config_history: [],
 		active_chat: '',
-		current_profile: { id: 0, username: 'test', openaiApiKey: '', avatarUrl: '', stash_mapping: [] },
+		current_profile_id: "",
 		folders: {},
 		current_conversation: [],
-		work_conversation: [],
+		work_conversations: [[]],
 		active_index: 0,
-
-		addToWorkingChat: (item) => set((state) => ({ work_conversation: [...state.work_conversation, ...item] })),
+		active_work_conversation: 0,
 
 		setActiveChat: (chat_id) => set({ active_chat: chat_id }),
+		setActiveWorkConversation: (index) => set({ active_work_conversation: index }),
 
-		setCurrentProfile: (new_profile) => {
+
+
+		pushToWorkConversation: (index, newMessages) => {
 			set((state) => {
-				const newFolders = extractFolderNames(new_profile.stash_mapping);
-				return {
-					...state,
-					current_profile: new_profile,
-					folders: newFolders
-				};
+				const updatedWorkConversations = [...state.work_conversations];
+				updatedWorkConversations[index] = [...updatedWorkConversations[index], ...newMessages];
+				console.log("PUSHSTORE", updatedWorkConversations)
+				return { work_conversations: updatedWorkConversations };
 			});
+		},
+
+		replaceAllWorkConversations: (newWorkConversations) => {
+			set(() => ({
+				work_conversations: newWorkConversations,
+			}));
+		},
+
+		setCurrentProfileId: (current_profile_id) => {
+			set({ current_profile_id: current_profile_id })
 		},
 
 		fetchConversation: async (conversation_id) => {

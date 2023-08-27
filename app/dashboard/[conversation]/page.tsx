@@ -1,12 +1,6 @@
 import { createClient } from "@supabase/supabase-js"
 import { MessageEditor } from './components/messageEditor'
 
-
-
-
-
-
-
 export default async function Editor({ params }: { params: { conversation: string } }) {
 
 	const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!, {

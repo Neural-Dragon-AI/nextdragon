@@ -15,12 +15,14 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 
 	/* const setCurrentProfile = useNextStore(state => state.setCurrentProfile) */
-	/* const currentProfile = useNextStore(state => state.current_profile) */
+	const setCurrentProfileId = useNextStore(state => state.setCurrentProfileId)
+
+	useEffect(() => {
+		setCurrentProfileId(profile.id.toString())
+	})
+
 	const [isPending, startTransition] = useTransition()
 
-	/* if (currentProfile.stash_mapping.length === 0) { */
-	/* 	setCurrentProfile(profile) */
-	/* } */
 
 	const router = useRouter();
 	const supabase = createClientComponentClient()
@@ -76,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
             right-0 top-3/4 w-40 transform  mt-0
             px-2 pt-3 pb-2 text-sm scale-y-0 group-hover:scale-y-100 origin-top
             text-black  transition duration-100 
-            ease-in-out  font-proxima font-bold shadow-lg">
+            ease-in-out  font-proxima font-bold shadow-lg  shadow-emerald-800/50">
 
 					<Link href="dashboard/account" className="flex flex-row w-full justify-evenly cursor-pointer hover:brightness-150 hover:bg-emerald-50/[.5] text-emerald-400 rounded-md p-0.5">
 

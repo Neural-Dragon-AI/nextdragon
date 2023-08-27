@@ -1,5 +1,5 @@
 'use client'
-import { useNextStore } from '@/store/NextStore';
+import { useNextStore, Message } from '@/store/NextStore';
 import { useEffect } from 'react'
 import { Virtuoso } from 'react-virtuoso';
 
@@ -10,6 +10,9 @@ interface RowProps {
 }
 
 export const Row: React.FC<RowProps> = ({ conversation_id }) => {
+
+
+
 	const setActiveChat = useNextStore(state => state.setActiveChat)
 
 	const fetchConversation = useNextStore(state => state.fetchConversation)
@@ -18,8 +21,8 @@ export const Row: React.FC<RowProps> = ({ conversation_id }) => {
 	const setActiveIndex = useNextStore(state => state.setActiveIndex)
 	const activeIndex = useNextStore(state => state.active_index)
 
-	const add = useNextStore(state => state.addToWorkingChat)
-	const working_chat = useNextStore(state => state.work_conversation)
+	const pushToWorkConversations = useNextStore(state => state.pushToWorkConversation)
+	const active_work_conversation = useNextStore(state => state.active_work_conversation)
 
 
 
@@ -33,7 +36,7 @@ export const Row: React.FC<RowProps> = ({ conversation_id }) => {
 
 	return (
 		current_conversation.length > 0 ? <section className=" h-full fixed left-0 top-0 w-[22%] ml-4 mt-1  bg-black rounded-md">
-			<section className=" h-[5%] w-full rounded-md border-y-2 border-white/[.3] flex flex-row justify-between place-items-center p-2">
+			<section className=" h-[5%] border-2  border-y-white/[.3] shadow-lg shadow-emerald-900/50 border-x-white/[.1] rounded-md flex flex-row justify-between place-items-center p-2">
 
 				<button className="flex flex-row w-[15%] text-xs justify-evenly cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] rounded-md p-0.5" onClick={() => console.log("h")}>
 					AddAll
@@ -58,9 +61,11 @@ export const Row: React.FC<RowProps> = ({ conversation_id }) => {
 							<div
 								key={index}
 								onClick={() => setActiveIndex(index)}
-								onDoubleClick={() => { add([message]) }}
+								onDoubleClick={() => {
+									pushToWorkConversations(active_work_conversation, [message])
+								}}
 
-								className={`rounded-md  font-proxima font-medium p-2  grid grid-cols-8 ${index === activeIndex ? 'bg-white/[.7] text-black' : message.role === 'assistant' ? 'bg-emerald-500/[.2] text-gray-400' : 'bg-white/[.2] text-gray-400'}`}>
+								className={`rounded-md  font-proxima font-medium p-2  grid grid-cols-8 ${index === activeIndex ? 'bg-white/[.7] text-black' : message.role === 'assistant' ? 'bg-emerald-300/[.3] text-white/[.7]' : 'border-2 border-white/[.2] bg-white/[.0] text-gray-400'}`}>
 								<p className="w-full break-all col-span-2 ">{message.role}</p>
 								<p className="h-full truncate col-span-6 col-start-3 ">{message.content}</p>
 							</div>
