@@ -14,12 +14,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 
-	/* const setCurrentProfile = useNextStore(state => state.setCurrentProfile) */
-	const setCurrentProfileId = useNextStore(state => state.setCurrentProfileId)
 
-	useEffect(() => {
-		setCurrentProfileId(profile.id.toString())
-	})
 
 	const [isPending, startTransition] = useTransition()
 

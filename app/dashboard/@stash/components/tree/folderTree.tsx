@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from "next/image"
 import { useNextStore, FolderTreeType, FileSystemObject } from '@/store/NextStore'
 
@@ -10,10 +10,12 @@ interface FolderTreeProps {
 
 export const FolderTree: React.FC<FolderTreeProps> = ({ data, children }) => {
 
-	const folders = useNextStore((state) => state.folders)
-  const toggleFolderStatus = useNextStore((state) => state.toggleFolderStatus)
-  const [ open, setOpen ] = useState(false)
 
+	const [open, setOpen] = useState(false)
+	useEffect(() => {
+		!useNextStore.persist.hasHydrated() ? useNextStore.persist.rehydrate() : null
+
+	}, [])
 	return (
 
 		<section className="w-full">

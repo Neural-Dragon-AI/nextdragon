@@ -1,5 +1,7 @@
 import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
 import { createClient } from "@supabase/supabase-js"
+import { urlToHttpOptions } from 'url';
 
 export interface FileTreeType {
 	type: "file";
@@ -50,6 +52,21 @@ export const extractFolderNames = (items: FileSystemObject[]): Folders => {
 	return result;
 };
 
+export const extractFilesNames = (items: FileSystemObject[]): string[] => {
+	let result: string[] = [''];
+	for (const item of items) {
+		if (item.type === 'file') {
+			result = [...result, item.name];
+		}
+	}
+	return result;
+};
+
+interface WorkMemoryObject {
+	name: string
+	content: Message[]
+}
+
 interface NextStore {
 
 	config_history: string[];
@@ -58,95 +75,114 @@ interface NextStore {
 	current_profile_id: string;
 	folders: Folders;
 	active_index: number;
-	work_conversations: Message[][];
 	active_work_conversation: number;
+	working_memory: WorkMemoryObject[];
 
 
-	toggleFolderStatus: (folderKey: string) => void;
+	setActiveFile: (activeChatIndex: string) => void;
+
+
 	pushToWorkConversation: (index: number, item: Message[]) => void;
-	replaceAllWorkConversations: (newWorkConversations: Message[][]) => void;
-	setActiveChat: (activeChatIndex: string) => void;
-	setCurrentProfileId: (current_profile_id: string) => void;
+	addWorkConversation: (name: string) => void;
+	removeWorkConversation: (index: number) => void;
+
 	fetchConversation: (converation_id: string) => void;
 	setActiveIndex: (active_index: number) => void;
 	setActiveWorkConversation: (index: number) => void;
 
 }
 
-export const useNextStore = create<NextStore>(
-	(set, get) => ({
-		config_history: [],
-		active_chat: '',
-		current_profile_id: "",
-		folders: {},
-		current_conversation: [],
-		work_conversations: [[]],
-		active_index: 0,
-		active_work_conversation: 0,
+export const useNextStore = create(
+	persist<NextStore>(
+		(set, get) => ({
+			config_history: [],
+			active_chat: '',
+			current_profile_id: "",
+			folders: {},
+			current_conversation: [],
 
-		setActiveChat: (chat_id) => set({ active_chat: chat_id }),
-		setActiveWorkConversation: (index) => set({ active_work_conversation: index }),
-
-
-
-		pushToWorkConversation: (index, newMessages) => {
-			set((state) => {
-				const updatedWorkConversations = [...state.work_conversations];
-				updatedWorkConversations[index] = [...updatedWorkConversations[index], ...newMessages];
-				console.log("PUSHSTORE", updatedWorkConversations)
-				return { work_conversations: updatedWorkConversations };
-			});
-		},
-
-		replaceAllWorkConversations: (newWorkConversations) => {
-			set(() => ({
-				work_conversations: newWorkConversations,
-			}));
-		},
-
-		setCurrentProfileId: (current_profile_id) => {
-			set({ current_profile_id: current_profile_id })
-		},
-
-		fetchConversation: async (conversation_id) => {
-			const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!, {
-				db: { schema: "conversations" }
-			})
-			const response = await supabase.from(conversation_id.replace(/\s/g, "").toLowerCase()).select('*').order('timestamp', { ascending: true })
-			if (response.data) {
-				set({ current_conversation: response.data })
-			}
-			else {
-				set({ current_conversation: [] })
-
-			}
-
-		},
-
-		setActiveIndex: async (active_index) => {
-			set({ active_index: active_index })
-		},
+			active_index: 0,
+			active_work_conversation: 0,
+			working_memory: [],
 
 
 
-		toggleFolderStatus: (folderKey: string) => {
-			set((state) => {
-				const currentStatus = state.folders[folderKey];
+			setActiveFile: (chat_id) => set({ active_chat: chat_id }),
 
-				// Se la chiave non esiste nel tuo stato, potresti voler gestire questo caso separatamente.
-				if (currentStatus === undefined) {
-					console.error(`Folder with key ${folderKey} does not exist.`);
-					return state;
+
+			setActiveWorkConversation: (index) => set({ active_work_conversation: index }),
+
+			addWorkConversation: (name) => {
+				set((state) => {
+					const newWorkConversation = { name: name, content: [] }
+					let updatedWorkConversations = [...state.working_memory];
+					updatedWorkConversations = [...updatedWorkConversations, newWorkConversation];
+					return { working_memory: updatedWorkConversations };
+				});
+			},
+
+			removeWorkConversation: (index) => {
+				set((state) => {
+					const updatedWorkConversations = state.working_memory.filter((_, i) => i !== index);
+					return { working_memory: updatedWorkConversations };
+				});
+			},
+
+			pushToWorkConversation: (index, newMessages) => {
+				set((state) => {
+					const updatedWorkConversations = [...state.working_memory];
+					updatedWorkConversations[index].content = [...updatedWorkConversations[index].content, ...newMessages];
+					console.log("PUSHSTORE", updatedWorkConversations)
+					return { working_memory: updatedWorkConversations };
+				});
+			},
+
+
+			fetchConversation: async (conversation_id) => {
+				const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!, {
+					db: { schema: "conversations" }
+				})
+				const response = await supabase.from(conversation_id.replace(/\s/g, "").toLowerCase()).select('*').order('timestamp', { ascending: true })
+				if (response.data) {
+					set({ current_conversation: response.data })
+				}
+				else {
+					set({ current_conversation: [] })
+
 				}
 
-				return {
-					...state,
-					folders: {
-						...state.folders,
-						[folderKey]: !currentStatus
+			},
+
+			setActiveIndex: async (active_index) => {
+				set({ active_index: active_index })
+			},
+
+
+
+
+		}),
+		//endOfStore
+
+
+		//storeOptions
+		{
+
+			name: "nextdragon",
+			skipHydration: true,
+			onRehydrateStorage: (state) => {
+				console.log('hydration starts')
+
+				// optional
+				return (state, error) => {
+					if (error) {
+						console.log('an error happened during hydration', error)
+					} else {
+						console.log('hydration finished')
 					}
-				};
-			});
-		},
-	})
-)
+				}
+			},
+		}
+		//endOfStoreOptions
+
+	) //persist
+) //create

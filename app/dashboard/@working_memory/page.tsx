@@ -14,7 +14,9 @@ interface WorkingObject {
 
 interface WorkingMemory {
 
-	working_memory: WorkingObject[] }
+	working_memory: WorkingObject[]
+	id: string
+}
 
 
 export default async function Working_Memory() {
@@ -29,7 +31,7 @@ export default async function Working_Memory() {
 	const memory = await unstable_cache(
 
 		async () => {
-			const memory = await supabase.from('profiles').select('working_memory')
+			const memory = await supabase.from('profiles').select('id, working_memory')
 			return memory
 		},
 		['working_data'],
@@ -45,7 +47,7 @@ export default async function Working_Memory() {
 
 
 		<section className="w-[90%] h-full  overflow-auto  rounded-md mr-2 pb-0 justify-end flex flex-col">
-			{working_memory ? <WorkingEditor working_data={working_memory.working_memory} /> : <WorkingEditor working_data={[]} />}
+			{working_memory ? <WorkingEditor  id={working_memory.id} /> : <WorkingEditor id={''}  />}
 		</section>
 
 	)

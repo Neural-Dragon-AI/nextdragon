@@ -22,7 +22,7 @@ export const RecursiveTree: React.FC<RecursiveTreeProps> = ({ mapping }) => {
           );
         }
 
-        return null; // Aggiunto per evitare un warning di "expected return"
+        return null; 
       })}
     </>
   );
