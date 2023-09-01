@@ -2,16 +2,14 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import Image from "next/image"
-import Link from 'next/link'
+
 import { ChangeEvent, useState } from 'react';
 import { updateUser, updateProfileImage } from "@/actions/userSettings"
 import { useTransition, useEffect } from 'react'
 import { experimental_useOptimistic as useOptimistic, useRef } from 'react'
-import { revalidatePath, revalidateTag } from 'next/cache'
-import { useRouter } from 'next/navigation'
-import { useNextStore } from '@/store/NextStore'
 
-import { redirect } from "next/navigation";
+import { useRouter } from 'next/navigation'
+
 
 
 interface Profile {
@@ -31,8 +29,7 @@ export default function SettingsForm(prop: Profile | any) {
 	const [isPending, startTransition] = useTransition()
 	const [imagesuccess, setImagesuccess] = useState(false)
 	const [savesuccess, setSavesuccess] = useState(false)
-	const setCurrentProfile = useNextStore((state) => state.setCurrentProfile)
-	const current_username = useNextStore((state) => state.current_profile.username)
+
 
 	useEffect(() => {
 		const channel = supabase.channel('settings').on('postgres_changes', {
@@ -41,9 +38,7 @@ export default function SettingsForm(prop: Profile | any) {
 			table: 'profiles',
 		}, (payload) => {
 			const newrow: any = payload.new
-		  console.log(newrow)
-			setCurrentProfile(newrow)
-
+			console.log(newrow)
 
 		}).subscribe()
 		return () => {
@@ -74,7 +69,7 @@ export default function SettingsForm(prop: Profile | any) {
 	return (
 
 		<div className="relative  bg-gray-700  rounded-md p-8 w-1/2 h-3/4 font-proxima ">
-			<p className="text-emerald-300 text-2xl  ml-28 mt-12 h-fit w-fit">Hello {current_username}</p>
+			<p className="text-emerald-300 text-2xl  ml-28 mt-12 h-fit w-fit">Hello current_username</p>
 			<label htmlFor="avatar">
 				<Image
 					className="rounded-full h-44 w-44 object-cover absolute right-12 cursor-pointer"
@@ -99,7 +94,7 @@ export default function SettingsForm(prop: Profile | any) {
 					<input hidden name="id" type="string" value={profile.id} readOnly />
 					<label className="mb-1 text-emerald-300" >Username</label>
 					<div className="mb-8 flex flex-row space-x-2">
-						<input name="username" placeholder={current_username} defaultValue={current_username}
+						<input name="username" placeholder={"current_username"} defaultValue={"current_username"}
 							type="text" onChange={() => { setSavesuccess(false) }}
 							className="resize-none h-8 overflow-hidden w-1/2 border-none rounded-md px-4 text-sm 
 				  invalid:ring-red-500  bg-white/[.1] ring-none dark:outline-white

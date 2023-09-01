@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { createClient } from "@supabase/supabase-js"
-import { urlToHttpOptions } from 'url';
+
 
 export interface FileTreeType {
 	type: "file";
@@ -40,28 +39,28 @@ export interface Folders {
 	[folderName: string]: boolean;
 }
 
-export const extractFolderNames = (items: FileSystemObject[]): Folders => {
-	let result: Folders = {};
-	for (const item of items) {
-		if (item.type === 'folder') {
-			result[item.name] = false;
-			const childFolders = extractFolderNames(item.childrens);
-			result = { ...result, ...childFolders };
-		}
-	}
-	return result;
-};
-
-export const extractFilesNames = (items: FileSystemObject[]): string[] => {
-	let result: string[] = [''];
-	for (const item of items) {
-		if (item.type === 'file') {
-			result = [...result, item.name];
-		}
-	}
-	return result;
-};
-
+/* export const extractFolderNames = (items: FileSystemObject[]): Folders => { */
+/* 	let result: Folders = {}; */
+/* 	for (const item of items) { */
+/* 		if (item.type === 'folder') { */
+/* 			result[item.name] = false; */
+/* 			const childFolders = extractFolderNames(item.childrens); */
+/* 			result = { ...result, ...childFolders }; */
+/* 		} */
+/* 	} */
+/* 	return result; */
+/* }; */
+/**/
+/* export const extractFilesNames = (items: FileSystemObject[]): string[] => { */
+/* 	let result: string[] = ['']; */
+/* 	for (const item of items) { */
+/* 		if (item.type === 'file') { */
+/* 			result = [...result, item.name]; */
+/* 		} */
+/* 	} */
+/* 	return result; */
+/* }; */
+/**/
 interface WorkMemoryObject {
 	name: string
 	content: Message[]
@@ -69,25 +68,23 @@ interface WorkMemoryObject {
 
 interface NextStore {
 
-	config_history: string[];
-	active_chat: string;
-	current_conversation: Message[];
-	current_profile_id: string;
-	folders: Folders;
-	active_index: number;
+
+
+
+	active_index: { [key: string]: number };
 	active_work_conversation: number;
 	working_memory: WorkMemoryObject[];
 
 
-	setActiveFile: (activeChatIndex: string) => void;
+
 
 	setWorkingMemory: (working_memory: WorkMemoryObject[]) => void;
 	pushToWorkConversation: (index: number, item: Message[]) => void;
 	addWorkConversation: (name: string) => void;
 	removeWorkConversation: (index: number) => void;
 
-	fetchConversation: (converation_id: string) => void;
-	setActiveIndex: (active_index: number) => void;
+
+	setActiveIndex: (key: string, value: number) => void;
 	setActiveWorkConversation: (index: number) => void;
 
 }
@@ -95,19 +92,10 @@ interface NextStore {
 export const useNextStore = create(
 	persist<NextStore>(
 		(set, get) => ({
-			config_history: [],
-			active_chat: '',
-			current_profile_id: "",
-			folders: {},
-			current_conversation: [],
 
-			active_index: 0,
+			active_index: {},
 			active_work_conversation: 0,
 			working_memory: [],
-
-
-
-			setActiveFile: (chat_id) => set({ active_chat: chat_id }),
 
 			setWorkingMemory: (working_memory) => set({ working_memory: working_memory }),
 
@@ -138,28 +126,16 @@ export const useNextStore = create(
 				});
 			},
 
-
-			fetchConversation: async (conversation_id) => {
-				const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!, {
-					db: { schema: "conversations" }
-				})
-				const response = await supabase.from(conversation_id.replace(/\s/g, "").toLowerCase()).select('*').order('timestamp', { ascending: true })
-				if (response.data) {
-					set({ current_conversation: response.data })
-				}
-				else {
-					set({ current_conversation: [] })
-
-				}
-
+			setActiveIndex: (key: string, value: number) => {
+				set((state) => {
+					return {
+						active_index: {
+							...state.active_index,
+							[key]: value,
+						},
+					};
+				});
 			},
-
-			setActiveIndex: async (active_index) => {
-				set({ active_index: active_index })
-			},
-
-
-
 
 		}),
 		//endOfStore

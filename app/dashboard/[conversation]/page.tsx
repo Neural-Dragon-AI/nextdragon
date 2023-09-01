@@ -8,11 +8,10 @@ export default async function Editor({ params }: { params: { conversation: strin
 	})
 
 	const { data: conv } = await supabase.from(params.conversation).select('*').order('timestamp', { ascending: true })
-/* 	console.log(conv) */
 
 	return (
-		<div className=" w-full h-full flex flex-row justify-between ">
-			{conv ?	<MessageEditor conversation={conv} />	: <MessageEditor conversation={[]} />}
+		<div className=" w-full h-full flex flex-row justify-between bg-transparent">
+			{conv ?	<MessageEditor conversation={conv} conversation_id={params.conversation} />	: <MessageEditor conversation={[]} conversation_id={params.conversation} />}
 		</div>
 	)
 }

@@ -20,18 +20,16 @@ export const FileTree: React.FC<FileTreeProps> = ({ data }) => {
 	return (
 
 		<section key={data.name} className="w-auto h-full  relative py-1 ">
-			<Link href={`/dashboard/${data.name.replace(/\s/g, "").toLowerCase()}`}>
-				<button
-					onClick={() => setOpen(!open)}
-					onContextMenu={handleRightClick}
-					className={`absolute top-0 left-0 flex flex-row items-center truncate rounded-md p-0.5 ${open ? 'bg-white/[.5] text-black ' : 'text-white'}`}
-				>
-					{/* SVG and text here */}
-					<div className="font-proxima w-fit h-6 p-0.5 text-sm rounded-md cursor-pointer">
-						{data.name}
-					</div>
-				</button>
-			</Link>
+			<button
+				onClick={() => setOpen(!open)}
+				onContextMenu={handleRightClick}
+				className={`absolute top-0 left-0 flex flex-row items-center truncate rounded-md p-0.5 ${open ? 'bg-white/[.5] text-black ' : 'text-white'}`}
+			>
+				{/* SVG and text here */}
+				<div className="font-proxima w-fit h-6 p-0.5 text-sm rounded-md cursor-pointer">
+					{data.name}
+				</div>
+			</button>
 			<AnimatePresence>
 				{open && (
 					<motion.section
@@ -42,10 +40,7 @@ export const FileTree: React.FC<FileTreeProps> = ({ data }) => {
 						transition={{ duration: 0.05 }}
 						className="w-full ml-12  mt-8 "
 					>
-
 						<Row key={data.name} conversation_id={data.name} />
-
-
 					</motion.section>
 				)}
 			</AnimatePresence>

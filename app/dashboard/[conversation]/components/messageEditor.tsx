@@ -1,21 +1,23 @@
 'use client'
-import { Conversation } from "@/store/NextStore"
+import { Message } from "@/store/NextStore"
 import { Virtuoso } from 'react-virtuoso';
 import { useNextStore } from '@/store/NextStore';
 import { useRef, useEffect } from 'react'
 
 
-export const MessageEditor: React.FC<Conversation> = ({ conversation }) => {
-	const activeIndex = useNextStore(state => state.active_index)
 
+export const MessageEditor = ({ conversation, conversation_id }:
+	{ conversation: Message[], conversation_id: string }) => {
+	const activeIndex = useNextStore(state => state.active_index)
+	console.log(conversation)
 
 	const virtuoso = useRef(null);
 
 	useEffect(() => {
-		if (activeIndex !== null && virtuoso.current) {
+		if (activeIndex[conversation_id] !== null && virtuoso.current) {
 			//@ts-ignore
 			virtuoso.current.scrollToIndex({
-				index: activeIndex,
+				index: activeIndex[conversation_id],
 				align: "start",
 				behavior: "smooth"
 			})

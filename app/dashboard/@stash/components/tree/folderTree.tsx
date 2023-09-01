@@ -47,7 +47,7 @@ export const FolderTree: React.FC<FolderTreeProps> = ({ data, children }) => {
 							height={20}
 							alt="Folder"
 						/>}
-				<p className="text-white w-fit">{data.name}</p>
+				<p className="text-white text-sm w-fit">{data.name}</p>
 			</div>
 			<AnimatePresence>
 				{open && !empty && (

@@ -59,7 +59,7 @@ export default async function Layout(props: {
 
 
 
-					<div className=" h-full w-[90%]">
+					<div className="bg-transparent h-full w-[90%]">
 						{props.children}
 					</div>
 				</div>
