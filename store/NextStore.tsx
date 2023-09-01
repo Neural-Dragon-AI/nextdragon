@@ -81,7 +81,7 @@ interface NextStore {
 
 	setActiveFile: (activeChatIndex: string) => void;
 
-
+	setWorkingMemory: (working_memory: WorkMemoryObject[]) => void;
 	pushToWorkConversation: (index: number, item: Message[]) => void;
 	addWorkConversation: (name: string) => void;
 	removeWorkConversation: (index: number) => void;
@@ -109,6 +109,7 @@ export const useNextStore = create(
 
 			setActiveFile: (chat_id) => set({ active_chat: chat_id }),
 
+			setWorkingMemory: (working_memory) => set({ working_memory: working_memory }),
 
 			setActiveWorkConversation: (index) => set({ active_work_conversation: index }),
 

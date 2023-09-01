@@ -44,7 +44,8 @@ export const WorkingEditor: React.FC<WorkingEditorProps> = ({ id }) => {
 				<div className="absolute left-0 top-0.5 w-full">
 					<Options />
 				</div>
-				<div className="absolute right-4 top-0.5">
+				{/* <div className="absolute right-0 top-0.5"   >{working_memory[active_conv].name}</div> */}
+				<div className="absolute right-0 top-0.5">
 					<section className="group inline-block relative ">
 						<div className="rounded-md w-16 h-fit group-hover:text-emerald-400 cursor-pointer text-white font-bold flex flex-row justify-center place-items-center border-2 border-white/[.1]">
 							Items

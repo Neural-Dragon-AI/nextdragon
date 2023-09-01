@@ -1,8 +1,9 @@
 'use client'
 import { useNextStore, Message } from '@/store/NextStore';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Virtuoso } from 'react-virtuoso';
-
+import { createClient } from "@supabase/supabase-js"
+import { unstable_cache } from "next/cache"
 
 
 interface RowProps {
@@ -13,10 +14,48 @@ export const Row: React.FC<RowProps> = ({ conversation_id }) => {
 
 
 
-	const setActiveFile = useNextStore(state => state.setActiveFile)
+	const [conversation, setConversation] = useState<Message[]>([])
 
-	const fetchConversation = useNextStore(state => state.fetchConversation)
-	const current_conversation = useNextStore(state => state.current_conversation)
+	const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!, {
+		db: { schema: "conversations" }
+	})
+
+
+	const fetch_data = async (): Promise<Message[] | null> => {
+		let conversazione: Message[] | null = null;
+		try {
+			const { data, error }: {
+				data: Message[] | null; error: any
+			} = await supabase
+				.from(conversation_id.replace(/\s/g, "").toLowerCase())
+				.select('*')
+				.order('timestamp', { ascending: true });
+
+			if (error) {
+				throw error;
+			}
+
+			conversazione = data;
+		} catch (e) {
+			console.error("Errore durante il fetch dei dati:", e);
+		}
+		return conversazione;
+	};
+
+	useEffect(() => {
+		const fetchDataAndUpdateState = async () => {
+			const data = await fetch_data();
+			if (data) {
+				setConversation(data);
+				setActiveIndex(0);
+				// Fai altre cose con i dati se necessario
+			}
+		};
+
+		fetchDataAndUpdateState();
+	}, []);
+
+
 
 	const setActiveIndex = useNextStore(state => state.setActiveIndex)
 	const activeIndex = useNextStore(state => state.active_index)
@@ -29,56 +68,38 @@ export const Row: React.FC<RowProps> = ({ conversation_id }) => {
 	}, [])
 
 
-	useEffect(() => {
-
-		fetchConversation(conversation_id)
-		setActiveIndex(0)
-
-	}, [])
 
 	return (
-		current_conversation.length > 0 ? <section className=" h-full fixed left-0 top-0 w-[22%] ml-4 mt-1  bg-black rounded-md">
+		<section className="w-full h-full  rounded-md">
 			<section className=" h-[5%] border-2  border-y-white/[.3] shadow-lg shadow-emerald-900/50 border-x-white/[.1] rounded-md flex flex-row justify-between place-items-center p-2">
-
 				<button className="flex flex-row w-[15%] text-xs justify-evenly cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] rounded-md p-0.5" onClick={() => console.log("h")}>
 					AddAll
 				</button>
-
-
-
-				<button className=" h-5 w-5  right-2 text-red-200 text-bold" onClick={() => setActiveFile('')}>
-					<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.00002 15.3802H13.92C15.62 15.3802 17 14.0002 17 12.3002C17 10.6002 15.62 9.22021 13.92 9.22021H7.15002" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8.57 10.7701L7 9.19012L8.57 7.62012" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-				</button>
-
-
 			</section>
+			<section className="h-fit w-full     p-0 cursor-pointer">
+				{conversation.map((message, index) => (
+					<section key={index}>
+						<div
+							onClick={() => setActiveIndex(index)}
+							onDoubleClick={() => {
+								pushToWorkConversations(active_work_conversation, [message]);
+							}}
+							className={`rounded-md font-proxima font-medium p-1 grid grid-cols-8 ${index === activeIndex
+								? "bg-white/[.7] text-black"
+								: message.role === "assistant"
+									? "bg-emerald-300/[.3] text-white/[.7]"
+									: "border-2 border-white/[.2] bg-white/[.0] text-gray-400"
+								}`}
+						>
+							<p className="w-full break-all col-span-2">{message.role}</p>
+							<p className="h-full truncate col-span-6 col-start-3">
+								{message.content}
+							</p>
+						</div>
 
-			<section className="absolute top-14 h-full w-full overflow-y-aut0    p-0 cursor-pointer">
-				<Virtuoso
-					alignToBottom={true}
-					data={current_conversation}
-					followOutput={'smooth'}
-					itemContent={(index, message) => {
-						return (<section>
-							<div
-								key={index}
-								onClick={() => setActiveIndex(index)}
-								onDoubleClick={() => {
-									pushToWorkConversations(active_work_conversation, [message])
-								}}
-
-								className={`rounded-md  font-proxima font-medium p-2  grid grid-cols-8 ${index === activeIndex ? 'bg-white/[.7] text-black' : message.role === 'assistant' ? 'bg-emerald-300/[.3] text-white/[.7]' : 'border-2 border-white/[.2] bg-white/[.0] text-gray-400'}`}>
-								<p className="w-full break-all col-span-2 ">{message.role}</p>
-								<p className="h-full truncate col-span-6 col-start-3 ">{message.content}</p>
-							</div>
-							<div className="w-full bg-transparent h-1" />
-						</section >
-						)
-					}}
-				/>
+					</section>
+				))}
 			</section>
 		</section>
-			: null
-
 	)
 }

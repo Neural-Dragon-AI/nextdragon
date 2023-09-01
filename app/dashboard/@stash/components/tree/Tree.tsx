@@ -11,7 +11,7 @@ interface TreeProps {
 export const Tree: React.FC<TreeProps> = ({ stash_mapping }) => {
 
 	return (
-		<div className="h-full w-full flex flex-col space-y-2 m-0  rounded-md">
+		<div className="h-full w-full m-0  rounded-md p-4">
 			<RecursiveTree mapping={stash_mapping} />
 		</div>
 	);

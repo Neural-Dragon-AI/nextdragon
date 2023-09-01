@@ -9,6 +9,7 @@ export const Options: React.FC = () => {
 	const [showmenu, setShowmenu] = useState(false)
 	const [newwork, setNewwork] = useState(false);
 	const [deletework, setDeletework] = useState(false);
+	const [deleteall, setDeleteall] = useState(false);
 
 	const [newfile, setNewfile] = useState('');
 
@@ -18,6 +19,9 @@ export const Options: React.FC = () => {
 	const removeWorkConversation = useNextStore((state) => state.removeWorkConversation)
 
 	const working_memory = useNextStore(state => state.working_memory)
+	const setWorkingMemory = useNextStore(state => state.setWorkingMemory)
+
+
 	const active_conv = useNextStore(state => state.active_work_conversation)
 	const setActiveConv = useNextStore(state => state.setActiveWorkConversation)
 
@@ -65,15 +69,15 @@ export const Options: React.FC = () => {
             font-proxima font-bold shadow-lg  shadow-emerald-800/50 flex flex-col place-items-start z-20'>
 
 
-					{!newwork && !deletework ? (<>
+					{!newwork && !deletework && !deleteall ? (<>
 
-						<button onClick={() => setNewwork(!newwork)} className="px-2 active:bg-emerald-300  border-y-2 w-fit border-y-white/[.2] flex flex-row   justify-start cursor-pointer hover:brightness-125 hover:bg-emerald-50/[.2] rounded-md p-0.5" >
+						<button onClick={() => setNewwork(true)} className="px-2 active:bg-emerald-300  border-y-2 w-fit border-y-white/[.2] flex flex-row   justify-start cursor-pointer hover:brightness-125 hover:bg-emerald-50/[.2] rounded-md p-0.5" >
 							New in memory
 						</button>
-						<button onClick={() => setDeletework(!newwork)} className="px-2 active:bg-emerald-300 active:text-white border-y-2  border-y-white/[.2] flex flex-row w-fit  justify-start cursor-pointer  hover:brightness-125 hover:bg-emerald-50/[.2] rounded-md p-0.5" >
+						<button onClick={() => setDeletework(true)} className="px-2 active:bg-emerald-300 active:text-white border-y-2  border-y-white/[.2] flex flex-row w-fit  justify-start cursor-pointer  hover:brightness-125 hover:bg-emerald-50/[.2] rounded-md p-0.5" >
 							Delete current from memory
 						</button>
-						<button className="px-2 active:bg-emerald-300 active:text-white border-y-2  border-y-white/[.2] flex flex-row w-fit  justify-start cursor-pointer  hover:brightness-125 hover:bg-emerald-50/[.2] rounded-md p-0.5" >
+						<button onClick={() => setDeleteall(true)}  className="px-2 active:bg-emerald-300 active:text-white border-y-2  border-y-white/[.2] flex flex-row w-fit  justify-start cursor-pointer  hover:brightness-125 hover:bg-emerald-50/[.2] rounded-md p-0.5" >
 							Delete all from memory
 						</button>
 
@@ -121,6 +125,24 @@ export const Options: React.FC = () => {
 									</button>
 								</div>
 							</motion.section>
+						: deleteall ?
+							<motion.section
+								initial={{ opacity: 0, scale: 0 }}
+								animate={deleteall ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+								transition={{ duration: 0.1 }}
+								className="h-full w-full backdrop-blur-3xl flex flex-col place-items-center z-20"
+								style={{ originX: 0.5, originY: 0.5 }}>
+								<div className="mt-2 mb-4 justify-center text-white  text-xs  w-full flex flex-row">This will completely clear your working memory. Are you sure ?</div>
+								<div className="flex flex-row w-full justify-evenly mt-2">
+									<button onClick={() => { setDeleteall(false), setShowmenu(false) }} className="active:bg-red-200 border-y-2 w-1/3 border-y-white/[.2] flex flex-row   justify-evenly cursor-pointer text-white/[.3] hover:text-white  rounded-md p-0.5" >
+										Cancel
+									</button>
+									<button onClick={()=> { setWorkingMemory([]), setDeleteall(false), setShowmenu(false) }} className="active:bg-emerald-300 active:text-white border-y-2 w-1/3 border-y-white/[.2] flex flex-row   justify-evenly cursor-pointer text-emerald-400 hover:brightness-125 hover:bg-emerald-50/[.5] rounded-md p-0.5" >
+										Confirm
+									</button>
+								</div>
+							</motion.section>
+
 							:
 							null}
 				</motion.section>

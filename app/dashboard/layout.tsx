@@ -46,7 +46,7 @@ export default async function Layout(props: {
 
 
 
-				<div className="w-full rounded-md h-full overflow-y-auto p-1">
+				<div className="w-full rounded-md h-full overflow-x-auto p-1">
 					{props.stash}
 				</div>
 
