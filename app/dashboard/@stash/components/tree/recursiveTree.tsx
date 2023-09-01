@@ -9,7 +9,7 @@ interface RecursiveTreeProps {
 export const RecursiveTree: React.FC<RecursiveTreeProps> = ({ mapping }) => {
 	return (
 		<>
-			<section className="flex flex-col h-full justify-start space-y-4">
+			<section className="flex flex-col h-full justify-start space-y-5">
 				{mapping.map((item, index) => {
 					if (item.type === 'file') {
 						return <FileTree key={item.name.replace(/\s/g, "").toLowerCase()} data={item} />;

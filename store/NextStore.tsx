@@ -70,7 +70,7 @@ interface NextStore {
 
 
 
-
+	file_open: { [key: string]: boolean };
 	active_index: { [key: string]: number };
 	active_work_conversation: number;
 	working_memory: WorkMemoryObject[];
@@ -83,6 +83,7 @@ interface NextStore {
 	addWorkConversation: (name: string) => void;
 	removeWorkConversation: (index: number) => void;
 
+	setFileOpen: (key: string, value: boolean) => void;
 
 	setActiveIndex: (key: string, value: number) => void;
 	setActiveWorkConversation: (index: number) => void;
@@ -92,7 +93,7 @@ interface NextStore {
 export const useNextStore = create(
 	persist<NextStore>(
 		(set, get) => ({
-
+			file_open: {},
 			active_index: {},
 			active_work_conversation: 0,
 			working_memory: [],
@@ -123,6 +124,17 @@ export const useNextStore = create(
 					updatedWorkConversations[index].content = [...updatedWorkConversations[index].content, ...newMessages];
 					console.log("PUSHSTORE", updatedWorkConversations)
 					return { working_memory: updatedWorkConversations };
+				});
+			},
+
+			setFileOpen: (key: string, value: boolean) => {
+				set((state) => {
+					return {
+						file_open: {
+							...state.file_open,
+							[key]: value,
+						},
+					};
 				});
 			},
 
