@@ -4,6 +4,7 @@ import { ChangeEvent, useState } from 'react';
 import { useTransition, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from "next/image"
+import { ImportFromUrl } from "@/actions/stash_actions"
 
 
 interface Profile {
@@ -46,10 +47,24 @@ export default function Uploads(prop: Profile | any) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const parquetInputRef = useRef<HTMLInputElement>(null);
 
+
+
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
 			setSelectedZipOrJson(file);
+		}
+	};
+
+	const handleUploadZip = () => {
+		if (selectedZipOrJson) {
+
+		}
+	};
+
+	const handleShareUrl = () => {
+		if (inputString) {
+			ImportFromUrl(inputString)
 		}
 	};
 
@@ -61,18 +76,8 @@ export default function Uploads(prop: Profile | any) {
 	};
 
 
-	const handleUploadButtonClick = () => {
-		if (selectedZipOrJson) {
-			// Codice per eseguire l'upload del file Zip/Json
-			const formData = new FormData();
-			formData.append("id", profile.id);
-			formData.append("avatar", selectedFile);
-			/* startTransition(() => uploadBackup(formData)); */
-			setImagesuccess(true);
-		}
-	};
 
-	const handleUploadParquetClick = () => {
+	const handleUploadParquet = () => {
 		if (selectedParquet) {
 			// Codice per eseguire l'upload del file Parquet
 		}
@@ -84,11 +89,11 @@ export default function Uploads(prop: Profile | any) {
 
 	return (
 
-		<section className="flex flex-col justify-start place-items-start h-3/4 w-3/4 space-y-5 bg-gray-700/[.7] py-5 px-2 rounded-md border-2 border-white/20 ">
+		<section className="flex flex-col justify-center place-items-start h-3/4 w-3/4 space-y-16 bg-black py-5 px-2  ">
 			<p className="text-xl self-center">Upload your data</p>
 
 			<section className="w-full">
-				<div className="bg-gray-700 rounded-t-md w-full justify-between place-items-center h-10 px-1 flex flex-row space-x-4 font-proxima">
+				<div className="bg-black  border-emerald-50/[.3] border-x-2 border-t-2 rounded-t-md w-full justify-between place-items-center h-20 px-2 flex flex-row space-x-4 font-proxima">
 					<input
 						ref={fileInputRef}
 						hidden
@@ -97,8 +102,9 @@ export default function Uploads(prop: Profile | any) {
 						accept=".zip,.json"
 						onChange={handleFileChange}
 					/>
-					<button onClick={() => fileInputRef.current?.click()} className=" flex flex-row w-[20%]  space-x-2 cursor-pointer hover:text-emerald-400 hover:brightness-150 place-items-center bg-gray-500/[.5] rounded-md pr-4 pl-2 py-1">
-						<svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<button onClick={() => fileInputRef.current?.click()} className="w-[20%] flex flex-row  space-x-1
+										cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] place-items-center border-emerald-50/[.1] border-2 rounded-md justify-center py-1 pl-0">
+						<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
 							<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
 							<g id="SVGRepo_iconCarrier">
@@ -109,8 +115,8 @@ export default function Uploads(prop: Profile | any) {
 						<p>Upload</p>
 					</button>
 					<p className="truncate w-[50%]">{selectedZipOrJson ? selectedZipOrJson.name : null}</p>
-					<button onClick={() => handleUploadButtonClick()} className="w-[20%] flex flex-row  space-x-2
-										cursor-pointer hover:text-emerald-400 hover:brightness-150 place-items-center bg-gray-500/[.5] rounded-md justify-center py-1 pl-2">
+					<button onClick={() => handleUploadZip()} className="w-[20%] flex flex-row  space-x-2
+										cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] place-items-center border-emerald-50/[.1] border-2 rounded-md justify-center py-1 pl-2">
 						<p>Send</p>
 						<Image
 
@@ -121,74 +127,79 @@ export default function Uploads(prop: Profile | any) {
 						/>
 					</button>
 				</div>
-				<div className="w-full  text-sm px-4 py-1 bg-gray-700 rounded-b-md">
-					Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-					Lorem Ipsum has been the industry s standard dummy text ever since the 1500s,
-					when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has
+				<div className="w-full  shadow-md border-emerald-50/[.3] border-x-2 border-b-2  shadow-emerald-800/50 text-xs px-4 pb-2 bg-black rounded-b-md">
+					Upload a zip file containing your openai backup or the openai conversations json file.
 				</div>
 			</section>
 
 
 
+			<section className="w-full">
+				<div className="bg-black  border-emerald-50/[.3] border-x-2 border-t-2 rounded-t-md w-full justify-center place-items-center h-20 p-1 flex flex-row space-x-2 font-proxima">
+					<textarea onChange={(event) => setInputString(event.target.value)}
+						className="overflow-x-auto inline-block overflow-scroll ml-2 h-9 py-1 w-[75%] resize-none border-2  bg-transparent  text-white border-white/[.1] outline-none
+										focus:ring-0 focus:border-white/[.6] rounded-md " />
 
-			<div className="bg-gray-700 rounded-md w-full justify-between place-items-center h-10 p-1 flex flex-row space-x-4 font-proxima">
-				<textarea onChange={(event) => setInputString(event.target.value)}
-					className="ml-2 h-8 py-1 w-[75%] resize-none border-2  bg-transparent  text-white border-white/[.4] outline-none
-										focus:ring-0 focus:border-white/[.6] rounded-md overflow-hidden" />
+
+
+					<button onClick={() => handleShareUrl()} className="w-[20%] flex flex-row  space-x-2
+										cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] place-items-center border-emerald-50/[.1] border-2 rounded-md justify-center py-1 pl-2">
+						<p>Send</p>
+						<Image
+
+							src="https://www.svgrepo.com/show/469753/send.svg"
+							width={20}
+							height={20}
+							alt="Account"
+						/>
+					</button>
+				</div>
+				<div className="w-full shadow-md  shadow-emerald-800/50 text-xs px-4 pb-2  border-emerald-50/[.3] border-x-2 border-b-2 rounded-b-md">
+					Share an openi conversation from url.
+				</div>
+			</section>
 
 
 
-				<button onClick={() => handleUploadButtonClick()} className="w-[20%] flex flex-row  space-x-2
-										cursor-pointer hover:text-emerald-400 hover:brightness-150 place-items-center bg-gray-500/[.5] rounded-md justify-center py-1 pl-2">
-					<p>Send</p>
-					<Image
-
-						src="https://www.svgrepo.com/show/469753/send.svg"
-						width={20}
-						height={20}
-						alt="Account"
+			<section className="w-full">
+				<div className="bg-black  border-emerald-50/[.3] border-x-2 border-t-2 rounded-t-md w-full justify-between place-items-center h-20 px-2 flex flex-row space-x-4 font-proxima">
+					<input
+						ref={fileInputRef}
+						hidden
+						id="fileUpload"
+						type="file"
+						accept=".zip,.json"
+						onChange={handleFileChange}
 					/>
-				</button>
-			</div>
+					<button onClick={() => fileInputRef.current?.click()} className="w-[20%] flex flex-row  space-x-1
+										cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] place-items-center border-emerald-50/[.1] border-2 rounded-md justify-center py-1 pl-0">
+						<svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+							<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+							<g id="SVGRepo_iconCarrier">
+								<path d="M13.5 3H12H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H7.5M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V9.75V12V19C19 20.1046 18.1046 21 17 21H16.5"
+									stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+								<path d="M12 21L12 13M12 13L14.5 15.5M12 13L9.5 15.5" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g>
+						</svg>
+						<p>Upload </p>
+					</button>
+					<p className="truncate w-[50%]">{selectedParquet ? selectedParquet.name : null}</p>
+					<button onClick={() => handleUploadParquet()} className="w-[20%] flex flex-row  space-x-2
+										cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] place-items-center border-emerald-50/[.1] border-2 rounded-md justify-center py-1 pl-2">
+						<p>Send</p>
+						<Image
 
-
-
-
-
-			<div className="bg-gray-700 rounded-md w-full justify-between place-items-center h-10 px-1 flex flex-row space-x-4 font-proxima">
-				<input
-					ref={fileInputRef}
-					hidden
-					id="fileUpload"
-					type="file"
-					accept=".zip,.json"
-					onChange={handleFileChange}
-				/>
-				<button onClick={() => fileInputRef.current?.click()} className=" flex flex-row w-[20%]  space-x-2 cursor-pointer hover:text-emerald-400 hover:brightness-150 place-items-center bg-gray-500/[.5] rounded-md pr-4 pl-2 py-1">
-					<svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-						<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-						<g id="SVGRepo_iconCarrier">
-							<path d="M13.5 3H12H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H7.5M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V9.75V12V19C19 20.1046 18.1046 21 17 21H16.5"
-								stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-							<path d="M12 21L12 13M12 13L14.5 15.5M12 13L9.5 15.5" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g>
-					</svg>
-					<p>Upload </p>
-				</button>
-				<p className="truncate w-[50%]">{selectedParquet ? selectedParquet.name : null}</p>
-				<button onClick={() => handleUploadButtonClick()} className="w-[20%] flex flex-row  space-x-2
-										cursor-pointer hover:text-emerald-400 hover:brightness-150 place-items-center bg-gray-500/[.5] rounded-md justify-center py-1 pl-2">
-					<p>Send</p>
-					<Image
-
-						src="https://www.svgrepo.com/show/469753/send.svg"
-						width={20}
-						height={20}
-						alt="Account"
-					/>
-				</button>
-			</div>
-
+							src="https://www.svgrepo.com/show/469753/send.svg"
+							width={20}
+							height={20}
+							alt="Account"
+						/>
+					</button>
+				</div>
+				<div className="w-full  shadow-md border-emerald-50/[.3] border-x-2 border-b-2  shadow-emerald-800/50 text-xs px-4 pb-2 bg-black rounded-b-md">
+					Upload a parquet in BabyDragon format.
+				</div>
+			</section>
 
 
 		</section>

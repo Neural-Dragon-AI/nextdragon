@@ -3,7 +3,8 @@ import { getSession } from "@/actions/serverCookies";
 import { unstable_cache } from 'next/cache'
 import { Tree } from './components/tree/Tree'
 import { redirect } from "next/navigation";
-
+import StashBar from './components/stashBar'
+import { Profile } from '@/store/NextStore'
 
 export default async function Stash() {
 
@@ -14,11 +15,11 @@ export default async function Stash() {
 		redirect("/login");
 	}
 
-	const stash_mapping = await unstable_cache(
+	const data = await unstable_cache(
 
 		async () => {
-			const { data: stash } = await supabase.from('profiles').select('stash_mapping')
-			return stash
+			const data = await supabase.from('profiles').select('*')
+			return data
 		},
 		['stash_mapping'],
 		{
@@ -27,12 +28,19 @@ export default async function Stash() {
 		}
 	)()
 
+	const profile: Profile | any = data.data ? data.data[0] : null
+
 
 	return (
 
 
-		<section className="w-full h-full  overflow-x-auto ">
-				{stash_mapping ? <Tree stash_mapping={stash_mapping[0].stash_mapping} /> : null}
+		<section className="relative w-full h-full  overflow-x-auto  ">
+			<section className=" w-[24%] fixed top-2 z-20 shadow-xl  shadow-black">
+				<StashBar id={profile.id} />
+			</section>
+			<section className="w-full h-[75%] absolute top-20 ">
+				{profile.stash_mapping ? <Tree stash_mapping={profile.stash_mapping} /> : null}
+			</section>
 		</section>
 
 	)
