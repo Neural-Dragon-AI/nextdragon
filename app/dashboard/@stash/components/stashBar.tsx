@@ -1,10 +1,6 @@
 "use client";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { ChangeEvent, useState } from 'react';
 import Link from 'next/link'
-import { useTransition, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
-import Image from "next/image"
+import { useNextStore } from "@/store/NextStore"
 import { DeleteStash } from "@/actions/stash_actions"
 
 
@@ -15,6 +11,7 @@ interface prop {
 
 export default function StashBar(id: prop) {
 
+	const delete_file_open = useNextStore((state) => state.deleteFileOpen)
 
 	return (
 
@@ -31,7 +28,7 @@ export default function StashBar(id: prop) {
 
 				<form className=" h-full w-[20%]" action={DeleteStash}>
 					<input hidden name="id" type="string" value={id.id} readOnly />
-					<button type="submit" className=" w-full
+					<button type="submit" onClick={delete_file_open} className=" w-full
 										cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] place-items-center border-emerald-50/[.1] border-2 rounded-md justify-center p-1">
 						<p>Delete</p>
 					</button>

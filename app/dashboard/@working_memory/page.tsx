@@ -42,7 +42,6 @@ export default async function Working_Memory() {
 	)()
 
 	const working_memory: WorkingMemory | null = memory.data ? memory.data[0] : null
-	console.log("DATA SOURCE", working_memory)
 	return (
 
 

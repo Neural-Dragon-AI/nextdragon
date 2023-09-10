@@ -38,7 +38,6 @@ export default function SettingsForm(prop: Profile | any) {
 			table: 'profiles',
 		}, (payload) => {
 			const newrow: any = payload.new
-			console.log(newrow)
 
 		}).subscribe()
 		return () => {

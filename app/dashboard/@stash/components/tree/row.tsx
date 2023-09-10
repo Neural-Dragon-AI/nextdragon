@@ -4,38 +4,31 @@ import { useEffect, useState } from 'react'
 import { createClient } from "@supabase/supabase-js"
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-
+import { GetMessages } from "@/actions/stash_actions"
 
 interface RowProps {
 	conversation_id: string
+	conversation_name: string
 
 }
 
-export const Row: React.FC<RowProps> = ({ conversation_id }) => {
+export const Row: React.FC<RowProps> = ({ conversation_id, conversation_name }) => {
 
 	const [conversation, setConversation] = useState<Message[]>([])
-	console.log("SONOUIO", conversation_id.replace(/\s/g, "").toLowerCase())
-	const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!, {
-		db: { schema: "conversations" }
-	})
+
 
 	const fetch_data = async (): Promise<Message[] | null> => {
-		let conversazione: Message[] | null = null;
+		const formData = new FormData()
+		formData.append("user_id", "6e1abc64-09f6-4950-9cea-fd425006e1b3")
+		formData.append("conversation_id", conversation_id)
 		try {
-			const { data, error }: {
-				data: Message[] | null; error: any
-			} = await supabase
-				.from(conversation_id.replace(/\s/g, "").toLowerCase())
-				.select('*')
-				.order('timestamp', { ascending: true });
-			if (error) {
-				throw error;
-			}
-			conversazione = data;
+			const data: Message[] | null = await GetMessages(formData)
+			return data;
 		} catch (e) {
 			console.error("Errore durante il fetch dei dati:", e);
+			return null
 		}
-		return conversazione;
+
 	};
 
 	useEffect(() => {
@@ -45,7 +38,6 @@ export const Row: React.FC<RowProps> = ({ conversation_id }) => {
 				setConversation(data);
 			}
 		};
-
 		fetchDataAndUpdateState();
 	}, []);
 
@@ -70,7 +62,7 @@ export const Row: React.FC<RowProps> = ({ conversation_id }) => {
 					<section className=" h-[5%] border-2  border-y-white/[.3] shadow-lg shadow-emerald-900/50 border-x-white/[.1] rounded-md flex flex-row space-x-5 justify-start place-items-center p-2">
 						<div
 							onClick={() => setFileOpen(conversation_id.replace(/\s/g, "").toLowerCase(), false)}
-							className="proxima text-emerald-400 text-sm cursor-pointer hover:text-white">{conversation_id}</div>
+							className="proxima text-emerald-400 text-sm cursor-pointer hover:text-white">{conversation_name}</div>
 						<Link
 							onClick={() => setActiveIndex(conversation_id.replace(/\s/g, "").toLowerCase(), 0)}
 							className="text-white" href={`/dashboard/${conversation_id.replace(/\s/g, "").toLowerCase()}`}>

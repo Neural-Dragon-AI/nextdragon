@@ -8,8 +8,11 @@ import { useRef, useEffect } from 'react'
 
 export const MessageEditor = ({ conversation, conversation_id }:
 	{ conversation: Message[], conversation_id: string }) => {
+
 	const activeIndex = useNextStore(state => state.active_index)
-	console.log(conversation)
+
+
+	const data = conversation.filter(item => item.role !== "system");
 
 	const virtuoso = useRef(null);
 
@@ -36,7 +39,7 @@ export const MessageEditor = ({ conversation, conversation_id }:
 						<section className=" h-[80%] w-full overflow-y-auto   p-0 selection:bg-[#eaeda6] selection:text-[black] ">
 							<Virtuoso
 								/* 								alignToBottom={true} */
-								data={conversation}
+								data={data}
 								ref={virtuoso}
 								followOutput={'smooth'}
 								itemContent={(index, message) => {
@@ -58,7 +61,7 @@ export const MessageEditor = ({ conversation, conversation_id }:
 											</section >
 										)
 									}
-									return null;
+									return <div className="bg-transparent" />;
 								}}
 							/>
 						</section>
@@ -67,7 +70,7 @@ export const MessageEditor = ({ conversation, conversation_id }:
 			)
 
 		} catch (error) {
-			console.error(error);
+			console.error("ERRORE IN VIRTUOSO", error);
 			return (
 				<>
 					<div className="w-[60%] rounded-md p-2 bg-red-500">

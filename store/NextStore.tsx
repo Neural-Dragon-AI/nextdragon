@@ -27,8 +27,14 @@ export interface Profile {
 export interface Message {
 	role: string
 	content: string
-	timestamp: number
 	tokens_count: number
+	conversation_id: string
+	conversation_title: string
+	create_time: number
+	message_id: string
+	parent_id?: string
+	update_time?: number
+	upload_time?: number
 }
 
 export interface Conversation {
@@ -80,10 +86,12 @@ interface NextStore {
 
 	setWorkingMemory: (working_memory: WorkMemoryObject[]) => void;
 	pushToWorkConversation: (index: number, item: Message[]) => void;
+
 	addWorkConversation: (name: string) => void;
 	removeWorkConversation: (index: number) => void;
 
 	setFileOpen: (key: string, value: boolean) => void;
+	deleteFileOpen: () => void
 
 	setActiveIndex: (key: string, value: number) => void;
 	setActiveWorkConversation: (index: number) => void;
@@ -128,6 +136,7 @@ export const useNextStore = create(
 			},
 
 			setFileOpen: (key: string, value: boolean) => {
+
 				set((state) => {
 					return {
 						file_open: {
@@ -136,7 +145,17 @@ export const useNextStore = create(
 						},
 					};
 				});
+
 			},
+
+			deleteFileOpen: () => {
+				set(() => {
+					return {
+						file_open: {},
+					};
+				});
+			},
+
 
 			setActiveIndex: (key: string, value: number) => {
 				set((state) => {

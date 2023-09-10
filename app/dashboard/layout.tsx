@@ -28,9 +28,9 @@ export default async function Layout(props: {
 			const profiles = await supabase.from('profiles').select('*')
 			return profiles
 		},
-		['account'],
+		['navbar'],
 		{
-			tags: ['account'],
+			tags: ['navbar'],
 			revalidate: 3600,
 		}
 	)()
@@ -53,7 +53,7 @@ export default async function Layout(props: {
 
 
 				<div className="w-full col-span-2 place-items-center flex flex-col space-y-8 justify-end">
-					<div className="w-1/2 h-8   flex justify-start flex-row">
+					<div className="w-1/2 h-12 mt-2  flex justify-start flex-row shadow-2xl  shadow-emerald-500/20 transition-all duration-1000 hover:shadow-emerald-500/60 rounded-md">
 						<Navbar profile={profile} />
 					</div>
 

@@ -1,17 +1,29 @@
-import { createClient } from "@supabase/supabase-js"
 import { MessageEditor } from './components/messageEditor'
+import { getSession } from "@/actions/serverCookies";
+import { redirect } from "next/navigation";
+
 
 export default async function Editor({ params }: { params: { conversation: string } }) {
 
-	const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!, {
-		db: { schema: "conversations" }
-	})
+	const session = await getSession();
 
-	const { data: conv } = await supabase.from(params.conversation).select('*').order('timestamp', { ascending: true })
+	if (!session) {
+		redirect("/login");
+	}
+	console.log("EDITORE CERCA", session.user.id, params.conversation)
+
+	const response = await fetch(`http://127.0.0.1:8000/getRows/${session.user.id}/${params.conversation}`, {
+		cache: 'no-store',
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+	});
+	const rows = await response.json()
 
 	return (
 		<div className=" w-full h-full flex flex-row justify-between bg-transparent">
-			{conv ?	<MessageEditor conversation={conv} conversation_id={params.conversation} />	: <MessageEditor conversation={[]} conversation_id={params.conversation} />}
+			{rows ? <MessageEditor conversation={rows} conversation_id={params.conversation} /> : <MessageEditor conversation={[]} conversation_id={params.conversation} />}
 		</div>
 	)
 }

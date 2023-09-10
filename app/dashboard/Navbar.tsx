@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 
 
 	return (
-		<nav className="flex h-8 border-x-2 border-white/[.3] border-b-2 rounded-b-3xl flex-row  place-items-center w-full justify-end space-x-12 shadow-lg z-10">
+		<nav className="flex h-full bg-black  rounded-md flex-row  place-items-center w-full justify-end space-x-12 z-10">
 			<div className="text-white">Hello</div>
 			<div className="text-white">Hello</div>
 			<div className="text-white">Hello</div>
@@ -69,11 +69,11 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 					/>
 
 				</div>
-				<div className="space-y-3 bg-black absolute border-emerald-50/[.3] border-b-2 border-l-2 rounded-bl-md
-            right-0 top-3/4 w-40 transform  mt-0
+				<div className="space-y-3 bg-black absolute rounded-bl-md
+            right-0 top-3/4 w-40 transform  mt-1 z-20
             px-2 pt-3 pb-2 text-sm scale-y-0 group-hover:scale-y-100 origin-top
-            text-black  transition duration-100 
-            ease-in-out  font-proxima font-bold shadow-lg  shadow-emerald-800/50">
+            text-black  transition duration-75 
+            ease-in-out  font-proxima font-bold shadow-lg  shadow-emerald-500/30">
 
 					<Link href="dashboard/account" className="flex flex-row w-full justify-evenly cursor-pointer hover:brightness-150 hover:bg-emerald-50/[.5] text-emerald-400 rounded-md p-0.5">
 

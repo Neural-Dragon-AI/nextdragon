@@ -36,7 +36,7 @@ export default async function Chat() {
 		<>
 			<section className="flex flex-row justify-between  w-[99.5%] h-[99%] ">
 				<BabyDragonActions />
-				<Conversation conversation={conversazione.data} />
+				{conversazione.data ? <Conversation conversation={conversazione.data} /> : null}
 				<IndexQuery />
 			</section>
 		</>
