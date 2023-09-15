@@ -53,7 +53,7 @@ export default async function Layout(props: {
 
 
 				<div className="w-full col-span-2 place-items-center flex flex-col space-y-8 justify-end">
-					<div className="w-1/2 h-12 mt-2  flex justify-start flex-row shadow-2xl  shadow-emerald-500/20 transition-all duration-1000 hover:shadow-emerald-500/60 rounded-md">
+					<div className="w-1/2 h-12 mt-2  flex justify-start flex-row shadow-2xl   transition-all duration-1000 hover:shadow-emerald-500/60 rounded-md">
 						<Navbar profile={profile} />
 					</div>
 

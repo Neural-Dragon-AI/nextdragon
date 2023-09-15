@@ -54,9 +54,33 @@ export const Navbar: React.FC<NavbarProps> = ({ profile }) => {
 
 	return (
 		<nav className="flex h-full bg-black  rounded-md flex-row  place-items-center w-full justify-end space-x-12 z-10">
-			<div className="text-white">Hello</div>
-			<div className="text-white">Hello</div>
-			<div className="text-white">Hello</div>
+
+			<Link
+
+				href="/dashboard/upload"
+				replace={true}
+				className=" flex place-items-center flex-row justify-center  w-full  cursor-pointer hover:brightness-150  text-emerald-400 rounded-md ">
+				<p className="h-25 ">Upload</p>
+			</Link>
+
+			<Link
+
+				href="/dashboard/info"
+				replace={true}
+				className=" flex place-items-center flex-row justify-center  w-full  cursor-pointer hover:brightness-150  text-emerald-400 rounded-md ">
+				<p className="h-25 ">Info</p>
+			</Link>
+
+
+			<Link
+
+				href="/dashboard/jobs"
+				replace={true}
+				className=" flex place-items-center flex-row justify-center  w-full  cursor-pointer hover:brightness-150  text-emerald-400 rounded-md ">
+				<p className="h-25 ">Jobs</p>
+			</Link>
+
+
 			<section className="group inline-block relative mt-2 ">
 				<div className="w-16  h-16  cursor-help text-black font-bold flex flex-row justify-center place-items-center">
 

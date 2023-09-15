@@ -76,7 +76,8 @@ export const Row: React.FC<RowProps> = ({ conversation_id, conversation_name }) 
 						</button>
 					</section>
 					<section className="h-fit w-full     p-0 cursor-pointer">
-						{conversation.map((message, index) => (
+						{conversation.filter(item => item.role !== "system").map((message, index) => (
+
 							<section className="scale-100 transition-all opacity-100" key={index}>
 								<div
 									onClick={() => setActiveIndex(conversation_id.replace(/\s/g, "").toLowerCase(), index)}
@@ -97,6 +98,8 @@ export const Row: React.FC<RowProps> = ({ conversation_id, conversation_name }) 
 								</div>
 
 							</section>
+
+
 						))}
 					</section>
 				</div>

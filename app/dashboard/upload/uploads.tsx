@@ -2,7 +2,8 @@
 import { ChangeEvent, useState, useTransition, useRef } from 'react'
 import Image from "next/image"
 import { ImportFromUrl, UploadOpenaiBackup } from "@/actions/stash_actions"
-
+import { RedirectType } from 'next/dist/client/components/redirect';
+import { redirect } from "next/navigation";
 
 interface Profile {
 	id: number;
@@ -36,8 +37,6 @@ export default function Uploads(prop: Profile | any) {
 
 	const handleUploadZip = () => {
 		if (selectedZipOrJson) {
-
-
 			const formData = new FormData()
 			formData.append("file", selectedZipOrJson)
 			console.log(selectedZipOrJson)
@@ -110,7 +109,8 @@ export default function Uploads(prop: Profile | any) {
 								<p>Upload</p>
 							</button>
 							<p className="truncate w-[50%]">{selectedZipOrJson ? selectedZipOrJson.name : null}</p>
-							<button onClick={() => handleUploadZip()} className="w-[20%] flex flex-row  space-x-2
+							<button
+								onClick={() => handleUploadZip()} className="w-[20%] flex flex-row  space-x-2
 										cursor-pointer text-emerald-400 hover:brightness-150 hover:bg-emerald-50/[.5] place-items-center border-emerald-50/[.1] border-2 rounded-md justify-center py-1 pl-2">
 								<p>Send</p>
 								<Image

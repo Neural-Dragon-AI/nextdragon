@@ -4,7 +4,8 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 import { redirect } from "next/navigation";
 import { FileSystemObject } from "@/store/NextStore"
 import { Conversation } from "@/app/chat/components/conversation";
-
+import { RedirectType } from 'next/dist/client/components/redirect';
+import { redux } from "zustand/middleware";
 
 
 export async function DeleteStash(e: FormData) {
@@ -18,7 +19,7 @@ export async function DeleteStash(e: FormData) {
 			'Content-Type': 'application/json'
 		},
 	});
-	revalidateTag('stash_mapping')
+	revalidatePath('/dashboard')
 }
 
 
@@ -68,7 +69,7 @@ export async function ImportFromUrl(url: string, id: string) {
 		body: JSON.stringify(payload_stash)
 	});
 
-
+	revalidateTag('info')
 	revalidateTag('stash_mapping');
 }
 
@@ -91,6 +92,10 @@ export async function GetMessages(e: FormData) {
 }
 
 
+export async function RevalidateInfo() {
+	revalidateTag('info')
+
+}
 
 
 
@@ -126,7 +131,7 @@ export async function UploadOpenaiBackup(e: FormData, id: string) {
 				},
 				body: JSON.stringify(payload_stash)
 			});
-			revalidateTag('stash_mapping');
+			revalidateTag('stash_mapping')
 
 		} else {
 			console.log("Errore:", response.statusText);
@@ -134,6 +139,7 @@ export async function UploadOpenaiBackup(e: FormData, id: string) {
 	} catch (error) {
 		console.error("Si è verificato un errore:", error);
 	}
+	redirect('/dashboard/info')
 };
 
 

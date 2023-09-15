@@ -1,12 +1,17 @@
+"use client"
 import { FileSystemObject } from '@/store/NextStore';
 import { FileTree } from "./fileTree"
 import { FolderTree } from "./folderTree"
+
 
 interface RecursiveTreeProps {
 	mapping: FileSystemObject[];
 }
 
 export const RecursiveTree: React.FC<RecursiveTreeProps> = ({ mapping }) => {
+
+
+
 	return (
 		<>
 			<section className="flex flex-col h-full justify-start space-y-5">
